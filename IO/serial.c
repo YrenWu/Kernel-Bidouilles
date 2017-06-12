@@ -1,4 +1,4 @@
-// serial ports addresses
+// Base addresses of serial ports 
 #define COM1_ADDR    0x3F8 // Start of buffer
 #define COM2_ADDR    0x2F8
 
