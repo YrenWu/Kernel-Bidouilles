@@ -23,10 +23,12 @@
 #define LIGHT_BROWN  	 14
 #define WHITE 			 15
 
-// x86's VGA buffer. 
+// x86's VGA buffer
 volatile uint16_t* vgaFrameBuffer = (uint16_t*) FRAMEBUFFER_START_ADDRESS;
  
-// start of framebuffer
+/* start of framebuffer.
+   Framebuffer is made by 25 rows and 80 columns, this is the console size
+   Lines and columns start to 0 offset, so first position is at (0,0) */
 int currentColumn 	= 0;
 int currentRow 		= 0;
 

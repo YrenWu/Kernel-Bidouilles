@@ -1,0 +1,8 @@
+*.elf
+*.o
+bochslog.txt
+qemuSerial.log
+bochsSerial.txt
+bochslog.txt
+os.iso
+
