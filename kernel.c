@@ -10,10 +10,10 @@ void kernel()
 	printColor("==================== YOP !!! ====================", WHITE, GREEN);
 	print("Bonjour 0xDEADBABE");
 
-	initSerial();
-	writeSerial('r');
-	writeSerial('r');
-	writeSerial('r');
+	initSerial(COM1_ADDR);
+	writeSerial('r', COM1_ADDR);
+	writeSerial('r', COM1_ADDR);
+	writeSerial('r', COM1_ADDR);
 }
 
 /**
