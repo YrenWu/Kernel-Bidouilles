@@ -12,3 +12,5 @@ Nécessaires au démarrage :
 - grub
 
 Pour le moment il y a juste un "Hello World" par un accès au port VGA et un log du kernel émulé vers la machine hote dans un fichier par le port série.
+
+(Readme en cours de rédaction)
