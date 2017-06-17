@@ -20,3 +20,13 @@ typedef struct 	SerialPort {
 	int initialized;
 } SerialPort;
 
+/* start of framebuffer.
+   Framebuffer is made by 25 rows and 80 columns, this is the console size
+   Lines and columns start to 0 offset, so first position is at (0,0) */
+typedef struct Terminal {
+	uint32_t address;
+	int initialized;
+	uint16_t defaultColor;
+	int currentColumn;
+	int currentRow;
+} Terminal;

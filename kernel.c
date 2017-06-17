@@ -7,7 +7,6 @@ void kernel()
 {
 	initTerm(BLACK, WHITE);
 	// Display some messages
-	printColor("==================== YOP !!! ====================", WHITE, GREEN);
 	print("Bonjour 0xDEADBABE");
 
 	logSerial("kisfmh<sf<");
@@ -18,7 +17,6 @@ void kernel()
 }
 /**
  * TODO: 
- * - Improve Serial 
  * - Set up GDT & IDT
  */
 

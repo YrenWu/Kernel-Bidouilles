@@ -25,14 +25,11 @@
 
 // x86's VGA buffer
 volatile uint16_t* vgaFrameBuffer = (uint16_t*) FRAMEBUFFER_START_ADDRESS;
- 
-/* start of framebuffer.
-   Framebuffer is made by 25 rows and 80 columns, this is the console size
-   Lines and columns start to 0 offset, so first position is at (0,0) */
-int currentColumn 	= 0;
-int currentRow 		= 0;
 
-uint16_t defaultColor;
+/* Terminal structure defined by address, row, column, color and initilized flag (int) */
+Terminal terminal = {
+   FRAMEBUFFER_START_ADDRESS, false
+};
 
 /**
  * Set the console color
@@ -62,14 +59,14 @@ uint8_t setColor(int background, int foreground)
 void initTerm(int background, int foreground)
 {
 	// set terminal default background and foreground color
-	defaultColor = setColor(background, foreground); 
+	terminal.defaultColor = setColor(background, foreground); 
 
 	for (int col = 0; col < FB_COLUMN_SIZE; col ++)
 	{
 		for (int row = 0; row < FB_ROW_SIZE; row ++)
 		{
 			int index = (FB_COLUMN_SIZE * row) + col;
-			vgaFrameBuffer[index] = ((uint16_t)defaultColor << 8) | ' ';
+			vgaFrameBuffer[index] = ((uint16_t)terminal.defaultColor << 8) | ' ';
 		}
 	}
 }
@@ -80,21 +77,21 @@ void initTerm(int background, int foreground)
  */
 void putChar(char c, uint8_t color)
 {
-	const size_t index = (FB_COLUMN_SIZE * currentRow) + currentColumn; // buffer index
+	const size_t index = (FB_COLUMN_SIZE * terminal.currentRow) + terminal.currentColumn; // buffer index
 	vgaFrameBuffer[index] = ((uint16_t)color << 8) | c;
-	currentColumn ++;
+	terminal.currentColumn ++;
  
-	if (currentColumn >= FB_COLUMN_SIZE)
+	if (terminal.currentColumn >= FB_COLUMN_SIZE)
 	{
-		currentColumn = 0;
-		currentRow ++;
+		terminal.currentColumn = 0;
+		terminal.currentRow ++;
 	}
  
 	// if full framebuffer return to top
-	if (currentRow >= FB_ROW_SIZE)
+	if (terminal.currentRow >= FB_ROW_SIZE)
 	{
-		currentColumn = 0;
-		currentRow = 0;
+		terminal.currentColumn = 0;
+		terminal.currentRow = 0;
 	}
 }
 
@@ -105,11 +102,11 @@ void putChar(char c, uint8_t color)
 void print(char* str)
 {
 	for (size_t i = 0; str[i] != '\0'; i ++){
-		putChar(str[i], defaultColor);
+		putChar(str[i], terminal.defaultColor);
 	} 
 	// change line
-	currentColumn = 0; 
-	currentRow ++;
+	terminal.currentColumn = 0; 
+	terminal.currentRow ++;
 }
  
  /**
@@ -126,8 +123,8 @@ void print(char* str)
 		putChar(str[i], color);
 	} 
 	// change line
-	currentColumn = 0; 
-	currentRow ++;	
+	terminal.currentColumn = 0; 
+	terminal.currentRow ++;	
  }
 
  
