@@ -6,6 +6,7 @@
 
 void kernel()
 {
+
 	// Display some messages
 	printColor("Bonjour 0xDEADBABE", LIGHT_MAGENTA, MAGENTA);
 	print("0_0");
