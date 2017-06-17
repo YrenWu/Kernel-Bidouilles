@@ -16,6 +16,8 @@ qemu:
 	$(CCOMPILER) $(LFLAGS) boot/linker.ld loader.o kernel.o -o $(KERNEL_NAME) -lgcc
 	# Launch emulator
 	$(QEMU) $(EMU_OPT) $(KERNEL_NAME) -serial file:$(LOG_FILE)
+	clear
+	cat qemuSerial.log
 
 bochs:
 	$(ASM) $(ASMFLAGS) boot/loader.s -o loader.o # -o loader.o io.o 

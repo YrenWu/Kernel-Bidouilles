@@ -11,47 +11,38 @@
 #define MODEM_STATUS_REG(baseAddr)  (baseAddr + 6)
 #define SCRATCH_REG(baseAddr)       (baseAddr + 7)
 
-/**
- * Configure speed for sending data to serial port
- * @param portCom The port COM to configure
- * @param divisor The divisor for baud rate (result speed in bits/s)
- */
-void configureBaudRate(unsigned short comPort, unsigned int divisor) {
-   /* Enable DLAB : tell serial port to wait for 8 most significants first bits */
-   outb(LINE_CTRL_REG(comPort), 0x80);         
-   /* Serial port have an internal clock who works at 115200 with Hz
-      Divisor allow to control the speed to send data (115200 / 2 = 57600 Hz)
-   */    
-   outb(comPort, divisor); 
-}
-
-/** 
- *  Configures the way data are send to the line of the given serial port
- *  @param comPort The serial port to configure
- */
-void configureLine(unsigned short comPort){
-   outb(LINE_CTRL_REG(comPort), 0x03); // standard value for 8 bits data length, no parity bits, one stop bit
-}
+/* Serial port structures defined by address and initilized flag (int) */
+SerialPort com1 = {
+   COM1_ADDR, false
+};
+SerialPort com2 = {
+   COM2_ADDR, false
+};
 
 /**
- * Initialize the serial port
+ * Initialize the serial port 
+ * -> Configure speed for sending data to serial port
+ * -> Configures the way data are send to the line of the given serial port
  * @param port The port to parameter
  * @param divisor To set bauds rate (bits per seconds speed on serial port)
  */
-void initSerial(unsigned short portCom, unsigned int divisor) {
-   /* configure serial port */
-   configureBaudRate(portCom, divisor); 
-   configureLine(portCom);
-}
-
-
-int serialReceived(unsigned short comPort) {
-   return inb(LINE_STATUS_REG(comPort)) & 1;
-}
- 
-char readSerial(unsigned short comPort) {
-   while (serialReceived(comPort) == 0) {
-      return inb((comPort));
+void initSerial(int nb, size_t divisor) {
+   switch (nb) {
+      case 1:
+         /* Enable DLAB : tell serial port to wait for 8 most significants first bits */
+         outb(LINE_CTRL_REG(com1.address), 0x80);         
+         //  Serial port have an internal clock who works at 115200 with Hz
+         //    Divisor allow to control the speed to send data (115200 / 2 = 57600 Hz)     
+         outb(com1.address, divisor); 
+         outb(LINE_CTRL_REG(com1.address), 0x03); // standard value for 8 bits data length, no parity bits, one stop bit
+         com1.initialized = true;
+         break;
+      case 2:
+         outb(LINE_CTRL_REG(com2.address), 0x80);         
+         outb(com2.address, divisor); 
+         outb(LINE_CTRL_REG(com2.address), 0x03); 
+         com2.initialized = true;      
+         break;
    }
 }
 
@@ -60,17 +51,40 @@ char readSerial(unsigned short comPort) {
  * @param comPort The COM port to check
  * @return 0 if not empty, 1 if empty
  */
-int isTransmitEmpty(unsigned short comPort) {
+int isTransmitEmpty(uint16_t comPort) {
    return inb(LINE_STATUS_REG(comPort)) & 0x20;
 }
- 
-void writeCharSerial(char a, unsigned short comPort) {
+
+/**
+ * Write a single character in serial port 
+ * @param c Character to write
+ * @param comPort Serial port where write data
+ *
+ */
+void writeCharSerial(char c, uint16_t comPort) {
    while (isTransmitEmpty(comPort) == 0);
-   outb((comPort),a);
+   outb((comPort),c);
 }
 
-void writeSerial(char* str, unsigned short comPort) {
+/**
+ * Write a string in serial port
+ * @param str The string to write
+ * @param comPort The serial port where write 
+ */
+void writeSerial(char* str, uint16_t comPort) {
    for (int i = 0; str[i] != '\0'; i ++){
       writeCharSerial(str[i], comPort);
    } 
+}
+
+void logSerial(char *message) {
+   char *flag;
+   if (com1.initialized == false) {
+      initSerial(1, 3);
+      flag = "INIT\n";
+   } else {
+      flag = "\n";
+   }
+   writeSerial(flag, com1.address);
+   writeSerial(message, com1.address);
 }
