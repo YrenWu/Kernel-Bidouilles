@@ -81,10 +81,8 @@ void logSerial(char *message) {
    char *flag;
    if (com1.initialized == false) {
       initSerial(1, 3);
-      flag = "INIT\n";
-   } else {
-      flag = "\n";
-   }
-   writeSerial(flag, com1.address);
+   } 
+   
    writeSerial(message, com1.address);
+   writeSerial("\n", com1.address);
 }
