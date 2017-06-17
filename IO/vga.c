@@ -23,12 +23,15 @@
 #define LIGHT_BROWN  	 14
 #define WHITE 			 15
 
+#define BACKGROUND 		 BLACK
+#define FOREGOUND 		 WHITE
+
 // x86's VGA buffer
 volatile uint16_t* vgaFrameBuffer = (uint16_t*) FRAMEBUFFER_START_ADDRESS;
 
-/* Terminal structure defined by address, row, column, color and initilized flag (int) */
+/* Terminal structure defined by address, initilized flag (int), row, column and color */
 Terminal terminal = {
-   FRAMEBUFFER_START_ADDRESS, false
+   FRAMEBUFFER_START_ADDRESS, false, 0, 0
 };
 
 /**
@@ -52,15 +55,14 @@ uint8_t setColor(int background, int foreground)
 	color = ((background & 0x0F) << 4) | (foreground & 0x0F);
 	return color;
 } 
- 
+
 /**
  * Clear the terminal
  */
-void initTerm(int background, int foreground)
+void clearConsole()
 {
-	// set terminal default background and foreground color
-	terminal.defaultColor = setColor(background, foreground); 
-
+	terminal.currentColumn = 0;
+	terminal.currentRow = 0;
 	for (int col = 0; col < FB_COLUMN_SIZE; col ++)
 	{
 		for (int row = 0; row < FB_ROW_SIZE; row ++)
@@ -72,11 +74,29 @@ void initTerm(int background, int foreground)
 }
 
 /**
+ * Set default Color and Clear
+ * @param background The backgrount color
+ * @param foreground The foreground color
+ */
+void initTerm(int background, int foreground)
+{
+	// set terminal default background and foreground color
+	terminal.defaultColor = setColor(background, foreground); 
+	terminal.initialized = true;
+	terminal.currentRow = 5;
+	terminal.currentColumn = 5;
+	clearConsole();
+}
+
+
+/**
  * Write a letter in terminal
  * @param char c The character to display
  */
 void putChar(char c, uint8_t color)
 {
+
+
 	const size_t index = (FB_COLUMN_SIZE * terminal.currentRow) + terminal.currentColumn; // buffer index
 	vgaFrameBuffer[index] = ((uint16_t)color << 8) | c;
 	terminal.currentColumn ++;
@@ -101,6 +121,10 @@ void putChar(char c, uint8_t color)
  */ 
 void print(char* str)
 {
+	if(terminal.initialized == false) {
+		// first use of terminal, initialize it
+		initTerm(BACKGROUND, FOREGOUND);
+	} 
 	for (size_t i = 0; str[i] != '\0'; i ++){
 		putChar(str[i], terminal.defaultColor);
 	} 
@@ -118,11 +142,14 @@ void print(char* str)
  */
  void printColor(char* str, int background, int foreground)
  {
+ 	if(terminal.initialized == false) {
+		initTerm(BACKGROUND, FOREGOUND);
+	} 
  	uint8_t color = setColor(background, foreground);
  	for (size_t i = 0; str[i] != '\0'; i ++){
 		putChar(str[i], color);
 	} 
-	// change line
+	// end of line
 	terminal.currentColumn = 0; 
 	terminal.currentRow ++;	
  }

@@ -5,15 +5,13 @@
 
 void kernel()
 {
-	initTerm(BLACK, WHITE);
+	
 	// Display some messages
-	print("Bonjour 0xDEADBABE");
+	printColor("Bonjour 0xDEADBABE", BROWN, CYAN);
+	print("0_0");
 
-	logSerial("kisfmh<sf<");
-	logSerial("kisfmh<sf<");
-	logSerial("kisfmh<sf<");
-	logSerial("kisfmh<sf<");
-	logSerial("\n");
+
+	logSerial("It works !!!");
 }
 /**
  * TODO: 

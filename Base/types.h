@@ -26,7 +26,7 @@ typedef struct 	SerialPort {
 typedef struct Terminal {
 	uint32_t address;
 	int initialized;
-	uint16_t defaultColor;
 	int currentColumn;
 	int currentRow;
+	uint16_t defaultColor;
 } Terminal;
