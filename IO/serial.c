@@ -31,8 +31,8 @@ void initSerial(int nb, size_t divisor) {
       case 1:
          /* Enable DLAB : tell serial port to wait for 8 most significants first bits */
          outb(LINE_CTRL_REG(com1.address), 0x80);         
-         //  Serial port have an internal clock who works at 115200 with Hz
-         //    Divisor allow to control the speed to send data (115200 / 2 = 57600 Hz)     
+         // Serial port have an internal clock who works at 115200 with Hz
+         // Divisor allow to control the speed to send data (115200 / 2 = 57600 Hz)     
          outb(com1.address, divisor); 
          outb(LINE_CTRL_REG(com1.address), 0x03); // standard value for 8 bits data length, no parity bits, one stop bit
          com1.initialized = true;
