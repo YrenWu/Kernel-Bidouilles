@@ -1,54 +1,58 @@
 /**  Global Descriptor Table Structure
 
-	Offset 		Base Address 		Limit Address 		Privilege Level 	Type 	Segment
-	0x00		0 (null descriptor) 0												NULL_DESCRIPTOR
-	0x08		0x00000000			0xFFFFFFFF 			Ring 0 				RX 		CS_DESCRIPTOR
-	0x10 		0x00000000			0xFFFFFFFF 			Ring 0 				RW 		DS_DESCRIPTOR
+ID	Offset 		Base Address 		Limit Address 		Privilege Level 	Type 	Segment 				
+0	0x00 (0)	0 (null descriptor) 0					0					0		NULL_DESCRIPTOR			Null
+1	0x08 (8)	0x00000000			0xFFFFFFFF 			Ring 0 (kernel)		RX 		CS_DESCRIPTOR_PL0		Code
+2	0x10 (16)	0x00000000			0xFFFFFFFF 			Ring 0 (kernel)		RW 		DS_DESCRIPTOR_PL0		Data
+3	0x18 (24)	0x00000000			0xFFFFFFFF 			Ring 3 (user)		RX		CS_DESCRIPTOR_PL3		Code
+4	0x20 (32)	0x00000000			0xFFFFFFFF 			Ring 3 (user)		RW		DS_DESCRIPTOR_PL3		Data
 
 	Offset + 8 bits at each time
 	DPL : Descriptor privilege level (ring level)
+
+	OPERATIONS :
+	1 segment selector (CS, DS) tells in which table (LDT, GDT)
+	2 fetch segment descriptor in the specified table (GDT or LDT) 
+	3 make linear address with base + offset 
+
 */
 #define NULL_DESCRIPTOR		0x00 // First descriptor (NULL)
-#define CS_DESCRIPTOR		0x9A // Code Segment Descriptor
-#define DS_DESCRIPTOR		0x92 // Data Segment Descriptor
+#define CS_DESCRIPTOR_PL0	0x9A // Code Segment Descriptor
+#define DS_DESCRIPTOR_PL0	0x92 // Data Segment Descriptor
+#define CS_DESCRIPTOR_PL3 	0xFA
+#define DS_DESCRIPTOR_PL3	0xF2
+#define GRANULARITY 		0xCF
 
-/** Segments Types
-	DS : Data Segment
-	CS : Code segment
-	R-O : Read-Only
-	R-W : Read-Write
-	R-X : Read-Execution
-	X-O : Execute-Only
-	EXP : Expand-Down
-	A : Accessed
-	C : Conforming
-*/
-#define DS_RO        		0x00 // Read-Only (R-O)
-#define DS_ROA       		0x01 // R-O, accessed
-#define DS_RW      			0x02 // Read/Write (R-W)
-#define DS_RWA   			0x03 // R-W accessed
-#define DS_RO_EXP    		0x04 // R-O, expand-down
-#define DS_RO_EXPA		   	0x05 // R-O, expand-down, accessed
-#define DS_RW_EXP  			0x06 // R-W expand-down
-#define DS_RW_EXPA 			0x07 // R-W expand-down, accessed
-#define CS_XO        		0x08 // Execute-Only (X-O)
-#define CS_XO_A       		0x09 // X-O, accessed
-#define CS_RX_RD      		0x0A // Execute/Read (R-X)
-#define CS_RX_RDA     		0x0B // R-X, accessed
-#define CS_XO_C       		0x0C // X-O, conforming
-#define CS_XO_CA      		0x0D // X-O, conforming, accessed
-#define CS_XO_RDC     		0x0E // R-X, conforming
-#define CS_XO_RDCA    		0x0F // R-X, conforming, accessed
+#define DEFAULT_BASE		0x00000000
+#define DEFAULT_LIMIT 		0xFFFFFFFF
 
+extern void gdtFlush(uint32_t);
+gdtEntry_t gdt[5];
+gdtPtr_t   ptrGdt;
 
-struct descriptor 
+static void setEntry(uint32_t i, uint32_t base, uint32_t limit, uint8_t pl, uint8_t granularity)
 {
-	uint16_t baseAddress;
-	uint16_t limitAddress;
-	unsigned int type;
-} __attribute__((packed));
+	gdt[i].baseLow 		= (base & 0xFFFF);
+	gdt[i].baseMiddle 	= (base >> 16) & 0xFF;
+	gdt[i].baseHigh 	= (base >> 24) & 0xFF;
 
-/*
-GDT[0] = {.base=0, .limit=0, .type=NULL_DESCRIPTOR};
-GDT[1] = {.base=0, .limit=0xffffffff, .type=CS_DESCRIPTOR};
-GDT[2] = {.base=0, .limit=0xffffffff, .type=DS_DESCRIPTOR};*/
+	gdt[i].limitLow  	= (limit & 0xFFFF);
+	gdt[i].granularity 	= (limit >> 16) & 0x0F;
+	gdt[i].granularity |= granularity & 0xF0;
+	gdt[i].privilege 	= pl;
+}
+
+static void gdtInit()
+{
+   ptrGdt.lastAddress = (sizeof(gdtEntry_t) * 5) - 1;
+   ptrGdt.firstAddress  = (uint32_t)&gdt;
+
+   setEntry(0, DEFAULT_BASE, 0, NULL_DESCRIPTOR, 0);  						 // Null segment
+   setEntry(1, DEFAULT_BASE, DEFAULT_LIMIT, CS_DESCRIPTOR_PL0, GRANULARITY); // Code segment
+   setEntry(2, DEFAULT_BASE, DEFAULT_LIMIT, DS_DESCRIPTOR_PL0, GRANULARITY); // Data segment
+   setEntry(3, DEFAULT_BASE, DEFAULT_LIMIT, CS_DESCRIPTOR_PL3, GRANULARITY); // User mode code segment
+   setEntry(4, DEFAULT_BASE, DEFAULT_LIMIT, DS_DESCRIPTOR_PL3, GRANULARITY); // User mode data segment
+
+   gdtFlush((uint32_t)&ptrGdt);
+}
+
