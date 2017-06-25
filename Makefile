@@ -8,22 +8,27 @@ EMU_OPT		= -kernel
 KERNEL_NAME = MyKernel.elf
 LOG_FILE	= qemuSerial.log
 
-qemu:
-	# Assemble and compile
+O_FILES 	= loader.o kernel.o gdtFlush.o
+
+assemble:
 	$(ASM) $(ASMFLAGS) boot/loader.s -o loader.o # -o loader.o io.o 
+	$(ASM) $(ASMFLAGS) Memory/gdtFlush.s -o gdtFlush.o
+
+compile:
 	$(CCOMPILER) $(CFLAGS) -c kernel.c -o kernel.o 
-	# Linker
-	$(CCOMPILER) $(LFLAGS) boot/linker.ld loader.o kernel.o -o $(KERNEL_NAME) -lgcc
+	$(CCOMPILER) $(LFLAGS) boot/linker.ld $(O_FILES) -o $(KERNEL_NAME) -lgcc #linker
+
+qemu:
+	make assemble
+	make compile
 	# Launch emulator
 	$(QEMU) $(EMU_OPT) $(KERNEL_NAME) -serial file:$(LOG_FILE)
 	clear
 	cat qemuSerial.log
 
 bochs:
-	$(ASM) $(ASMFLAGS) boot/loader.s -o loader.o # -o loader.o io.o 
-	$(CCOMPILER) $(CFLAGS) -c kernel.c -o kernel.o 
-	# Linker
-	$(CCOMPILER) $(LFLAGS) boot/linker.ld loader.o kernel.o -o $(KERNEL_NAME) -lgcc
+	make assemble
+	make compile
 
 	cp $(KERNEL_NAME) boot/$(KERNEL_NAME)
 	genisoimage -R                      \
