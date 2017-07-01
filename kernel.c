@@ -1,8 +1,7 @@
 #include "Base/types.h"
 #include "Base/devices.h"
-#include "Memory/structGDT.h"
+#include "Base/descriptors.h"
 
-#include "IO/io.c"
 #include "IO/vga.c"
 #include "IO/serial.c"
 
@@ -10,12 +9,13 @@
 
 void kernel()
 {
+	gdtInit();
+
 	// Display some messages
 	printColor("Bonjour 0xDEADBABE", LIGHT_MAGENTA, MAGENTA);
 	print("0_0");
 
 	logSerial("It works !!!");
-	gdtInit();
 }
 /**
  * TODO: 

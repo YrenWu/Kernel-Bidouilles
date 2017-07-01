@@ -1,7 +1,5 @@
-/**
- * @file types.h
- * basic types definitions
- */
+#ifndef TYPES_H
+#define TYPES_H
 
 /** Memory size of an object (positive) */
 typedef unsigned int 		size_t;
@@ -14,3 +12,5 @@ typedef unsigned char       uint8_t;  /* 8b unsigned */
 typedef int boolean;
 #define true 1
 #define false 0
+
+#endif

@@ -11,6 +11,16 @@
 #define MODEM_STATUS_REG(baseAddr)  (baseAddr + 6)
 #define SCRATCH_REG(baseAddr)       (baseAddr + 7)
 
+extern void outb();
+
+/** inb:
+ *  Lit un octet reçu d'un port E/S.
+ *
+ *  @param  port L'adresse du port E/S
+ *  @return      L'octet lu
+ */
+extern unsigned char inb(unsigned short port);
+
 /* Serial port structures defined by address and initilized flag (int) */
 SerialPort com1 = {
    COM1_ADDR, false

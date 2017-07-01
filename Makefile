@@ -8,11 +8,12 @@ EMU_OPT		= -kernel
 KERNEL_NAME = MyKernel.elf
 LOG_FILE	= qemuSerial.log
 
-O_FILES 	= loader.o kernel.o gdtFlush.o
+O_FILES 	= loader.o kernel.o memory.o io.o
 
 assemble:
 	$(ASM) $(ASMFLAGS) boot/loader.s -o loader.o # -o loader.o io.o 
-	$(ASM) $(ASMFLAGS) Memory/gdtFlush.s -o gdtFlush.o
+	$(ASM) $(ASMFLAGS) Assembly/memory.s -o memory.o
+	$(ASM) $(ASMFLAGS) Assembly/io.s -o io.o
 
 compile:
 	$(CCOMPILER) $(CFLAGS) -c kernel.c -o kernel.o 
