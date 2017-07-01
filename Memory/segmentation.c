@@ -16,6 +16,7 @@ ID	Offset 		Base Address 		Limit Address 		Privilege Level 	Type 	Segment
 	3 make linear address with base + offset 
 
 */
+
 #define NULL_DESCRIPTOR		0x00 // First descriptor (NULL)
 #define CS_DESCRIPTOR_PL0	0x9A // Code Segment Descriptor
 #define DS_DESCRIPTOR_PL0	0x92 // Data Segment Descriptor
@@ -26,7 +27,8 @@ ID	Offset 		Base Address 		Limit Address 		Privilege Level 	Type 	Segment
 #define DEFAULT_BASE		0x00000000
 #define DEFAULT_LIMIT 		0xFFFFFFFF
 
-extern void gdtFlush(uint32_t);
+extern void gdtFlush();
+
 gdtEntry_t gdt[5];
 gdtPtr_t   ptrGdt;
 
@@ -37,22 +39,25 @@ static void setEntry(uint32_t i, uint32_t base, uint32_t limit, uint8_t pl, uint
 	gdt[i].baseHigh 	= (base >> 24) & 0xFF;
 
 	gdt[i].limitLow  	= (limit & 0xFFFF);
+
 	gdt[i].granularity 	= (limit >> 16) & 0x0F;
 	gdt[i].granularity |= granularity & 0xF0;
+
 	gdt[i].privilege 	= pl;
 }
 
+
 static void gdtInit()
 {
-   ptrGdt.lastAddress = (sizeof(gdtEntry_t) * 5) - 1;
-   ptrGdt.firstAddress  = (uint32_t)&gdt;
+	ptrGdt.lastAddress = (sizeof(gdtEntry_t) * 5) - 1;
+    ptrGdt.firstAddress = (int)&gdt;
 
-   setEntry(0, DEFAULT_BASE, 0, NULL_DESCRIPTOR, 0);  						 // Null segment
-   setEntry(1, DEFAULT_BASE, DEFAULT_LIMIT, CS_DESCRIPTOR_PL0, GRANULARITY); // Code segment
-   setEntry(2, DEFAULT_BASE, DEFAULT_LIMIT, DS_DESCRIPTOR_PL0, GRANULARITY); // Data segment
-   setEntry(3, DEFAULT_BASE, DEFAULT_LIMIT, CS_DESCRIPTOR_PL3, GRANULARITY); // User mode code segment
-   setEntry(4, DEFAULT_BASE, DEFAULT_LIMIT, DS_DESCRIPTOR_PL3, GRANULARITY); // User mode data segment
+    setEntry(0, DEFAULT_BASE, 0, NULL_DESCRIPTOR, 0);  						  // Null descriptor
+    setEntry(1, DEFAULT_BASE, DEFAULT_LIMIT, CS_DESCRIPTOR_PL0, GRANULARITY); // Code segment
+    setEntry(2, DEFAULT_BASE, DEFAULT_LIMIT, DS_DESCRIPTOR_PL0, GRANULARITY); // Data segment
+    setEntry(3, DEFAULT_BASE, DEFAULT_LIMIT, CS_DESCRIPTOR_PL3, GRANULARITY); // User mode code segment
+    setEntry(4, DEFAULT_BASE, DEFAULT_LIMIT, DS_DESCRIPTOR_PL3, GRANULARITY); // User mode data segment
 
-   gdtFlush((uint32_t)&ptrGdt);
+    gdtFlush();
 }
 

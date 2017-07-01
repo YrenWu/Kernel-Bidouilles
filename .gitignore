@@ -5,4 +5,4 @@ qemuSerial.log
 bochsSerial.txt
 bochslog.txt
 os.iso
-
+boot/grub/stage2_eltorito
