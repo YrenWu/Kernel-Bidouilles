@@ -5,6 +5,7 @@ struct gdtEntry
 {
    uint16_t limitLow;           
    uint16_t baseLow;
+
    uint8_t baseMiddle;                 
    uint8_t privilege;              // Access flags, determine what ring this segment can be used in.
    uint8_t granularity;      
@@ -17,8 +18,9 @@ typedef struct gdtEntry gdtEntry_t;
 */
 struct gdtPtr
 {
-	unsigned short lastAddress;
-	unsigned int firstAddress;
+
+	uint16_t lastAddress;
+	uint32_t firstAddress;
 } __attribute__((packed));
 typedef struct gdtPtr gdtPtr_t; 
 

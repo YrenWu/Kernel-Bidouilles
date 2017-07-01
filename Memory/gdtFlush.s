@@ -1,3 +1,4 @@
+
 .global gdtFlush  	# make this function global, this will be visible in C code
 .extern ptrGdt   	# take an extern label form C code
 
