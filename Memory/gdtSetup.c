@@ -23,16 +23,19 @@ ID	Offset 		Base Address 		Limit Address 		Privilege Level 	Type 	Segment
 #define CS_DESCRIPTOR_PL3 	0xFA
 #define DS_DESCRIPTOR_PL3	0xF2
 #define GRANULARITY 		0xCF
+#define TSS_DESCRIPTOR 		0x89
 
 #define DEFAULT_BASE		0x00000000
 #define DEFAULT_LIMIT 		0xFFFFFFFF
+#define TSS_BASE 			0x00000000
+#define TSS_LIMIT			0xFFFFFFFF
 
 extern void gdtFlush();
 
-gdtEntry_t gdt[5];
+gdtEntry_t gdt[6];
 gdtPtr_t   ptrGdt;
 
-static void setEntry(uint32_t i, uint32_t base, uint32_t limit, uint8_t pl, uint8_t granularity)
+void setEntry(uint32_t i, uint32_t base, uint32_t limit, uint8_t pl, uint8_t granularity)
 {
 	gdt[i].baseLow 		= (base & 0xFFFF);
 	gdt[i].baseMiddle 	= (base >> 16) & 0xFF;
@@ -47,7 +50,7 @@ static void setEntry(uint32_t i, uint32_t base, uint32_t limit, uint8_t pl, uint
 }
 
 
-static void gdtInit()
+void gdtInit()
 {
 	ptrGdt.lastAddress = (sizeof(gdtEntry_t) * 5) - 1;
     ptrGdt.firstAddress = (int)&gdt;
@@ -57,6 +60,7 @@ static void gdtInit()
     setEntry(2, DEFAULT_BASE, DEFAULT_LIMIT, DS_DESCRIPTOR_PL0, GRANULARITY); // Data segment
     setEntry(3, DEFAULT_BASE, DEFAULT_LIMIT, CS_DESCRIPTOR_PL3, GRANULARITY); // User mode code segment
     setEntry(4, DEFAULT_BASE, DEFAULT_LIMIT, DS_DESCRIPTOR_PL3, GRANULARITY); // User mode data segment
+    setEntry(5, TSS_BASE, TSS_LIMIT, TSS_DESCRIPTOR, GRANULARITY); 	  // Task State Segment
 
     gdtFlush();
 }

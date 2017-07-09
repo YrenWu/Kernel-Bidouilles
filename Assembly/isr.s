@@ -3,6 +3,7 @@
 .macro noErrorCodeISR int
 .global isr\int
 isr\int:
+    cli
     pushl $0                   # error code 0
     pushl \int                 # interrupt number
     jmp commonInterruptHandler    # jump to interrupt handler routine
@@ -11,6 +12,7 @@ isr\int:
 .macro errorCodeISR int
 .global isr\int
 isr\int:
+    cli
     pushl \int                 # interrupt number
     jmp commonInterruptHandler    # jump to interrupt handler routine
 .endm
@@ -57,6 +59,34 @@ commonInterruptHandler:             # generic interrupt handler
     add $8, %esp
     iret
 
+
+# isr_common_stub:
+#    pusha                    # Pushes edi,esi,ebp,esp,ebx,edx,ecx,eax
+
+#    mov  %ds, %ax               # Lower 16-bits of eax = ds.
+#    push %eax                 # save the data segment descriptor
+
+#    mov $0x10, %ax # load the kernel data segment descriptor
+#    mov %ax, %ds
+#    mov %ax, %es
+#    mov %ax, %fs
+#    mov %ax, %gs
+
+#    call interruptHandler
+
+#    pop %eax        # reload the original data segment descriptor
+#    mov %ax, %ds
+#    mov %ax, %es
+#    mov %ax, %fs
+#    mov %ax, %gs
+
+#    popa                     # Pops edi,esi,ebp...
+#    add $8, %esp     # Cleans up the pushed error code and pushed ISR number
+#    sti
+#    iret           # pops 5 things at once: CS, EIP, EFLAGS, SS, and ESP 
+
+
+
 # create interruption handlers
 noErrorCodeISR 0    # 0x0 divide by zero            FAULT 
 noErrorCodeISR 1    # 0x1 Debug                     FAULT/TRAP
@@ -73,7 +103,7 @@ errorCodeISR 11     # 0xB Segment not present       FAULT
 errorCodeISR 12     # 0xC Stack segment fault       FAULT
 errorCodeISR 13     # 0xD Genreal protection fault  FAULT
 errorCodeISR 14     # 0xE Page fault                FAULT
-noErrorCodeISR 15   # 0xF Reserved 
+noErrorCodeISR 15   # 0xF  Unknown interrupt exception 
 noErrorCodeISR 16   # 0x10 Floating Point exception FAULT
 errorCodeISR 17     # 0x11 Alignment check          FAULT
 noErrorCodeISR 18   # 0x12 Machine check            ABORT

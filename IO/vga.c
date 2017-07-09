@@ -93,8 +93,6 @@ void initTerm(int background, int foreground)
  */
 void putChar(char c, uint8_t color)
 {
-
-
 	const size_t index = (FB_COLUMN_SIZE * terminal.currentRow) + terminal.currentColumn; // buffer index
 	vgaFrameBuffer[index] = ((uint16_t)color << 8) | c;
 	terminal.currentColumn ++;
@@ -131,6 +129,16 @@ void print(char* str)
 	terminal.currentRow ++;
 }
  
+void printHex(uint32_t n)
+{
+   // TODO: implement this yourself!
+}
+
+void printDec(uint32_t n)
+{
+   // TODO: implement this yourself!
+} 
+
  /**
  * Display string with colors
  *

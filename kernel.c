@@ -6,18 +6,21 @@
 #include "IO/vga.c"
 #include "IO/serial.c"
 
-#include "Memory/segmentation.c"
-#include "Interrupts/handler.c"
+#include "Memory/gdtSetup.c"
+#include "Interrupts/idtSetup.c"
 
 void kernel()
 {
 	gdtInit();
+	idtInit();
 
 	// Display some messages
 	printColor("Bonjour 0xDEADBABE", LIGHT_MAGENTA, MAGENTA);
 	print("0_0");
 
 	logSerial("It works !!!");
+	asm volatile ("int $0x3");
+	// asm volatile ("int $0x4"); 
 }
 
 // void initialize()
@@ -28,7 +31,6 @@ void kernel()
 // }
 /**
  * TODO: 
- * - Set up IDT
  * - Exceptions, IRQ, PIC
  */
 
