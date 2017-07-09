@@ -131,12 +131,36 @@ void print(char* str)
  
 void printHex(uint32_t n)
 {
-   // TODO: implement this yourself!
+   // TODO: implement
 }
 
-void printDec(uint32_t n)
+void printDec(int n)
 {
-   // TODO: implement this yourself!
+	if(terminal.initialized == false) {
+		initTerm(BACKGROUND, FOREGOUND);
+	} 
+	uint8_t numbers[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+
+    // if negative number
+	if (n < 0) {
+     	putChar('-', terminal.defaultColor);
+      	n = -n;
+    } 
+
+    char charsToDisplay[10]; // digit numbers 
+    char num;
+    int i = 0;
+    while (n > 0) { 
+    	int rest = n % 10;
+    	n = (n-rest) / 10;
+    	num = numbers[rest];
+    	charsToDisplay[i] = num;
+    	i++;
+    }
+    for(int j=0; j<=i; i--) {
+    	num = charsToDisplay[i-1];
+    	putChar(num, terminal.defaultColor);
+    } 
 } 
 
  /**

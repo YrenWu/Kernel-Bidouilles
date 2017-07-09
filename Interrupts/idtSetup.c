@@ -59,23 +59,8 @@ void idtInit()
    loadIDT((uint32_t)&ptrIdt);
 }
 
-void interruptHandler(cpuSize_t cpu, stackSize_t stack, uint8_t interrupt) {
-	print("Interrupt Triggered");
-	printDec(interrupt);
-}
-
 void printCPU(cpuSize_t cpu) {
-
-}
-
-void printStack(stackSize_t stack) {
-
-}
-
-/*struct stateCPU
-{
-	
-	size_t eax;
+ 	/*	size_t eax;
 	size_t ebx;
 	size_t ecx;
 	size_t edx;
@@ -87,17 +72,23 @@ void printStack(stackSize_t stack) {
 	size_t ss;
 	size_t es;
 	size_t fs;
-	size_t gs;
+	size_t gs;*/
+}
 
-} __attribute__((packed));
-typedef struct stateCPU cpuSize_t;
-
-struct stateStack
-{
-	size_t errorCode;
+void printStack(stackSize_t stack) {
+	/*size_t errorCode;
     size_t eip;
     size_t cs;
-    size_t eflags;
-	
-}__attribute__((packed));
-typedef struct stateStack stackSize_t;*/
+    size_t eflags; */
+}
+
+void debug(cpuSize_t cpu, stackSize_t stack, int interrupt) {
+	print("Interrupt Triggered");
+	printDec(-666);
+	printDec(interrupt);
+	printDec(999);	
+}
+
+void interruptHandler(cpuSize_t cpu, stackSize_t stack, int interrupt) {
+	debug(cpu, stack, interrupt);
+}

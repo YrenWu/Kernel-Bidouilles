@@ -20,15 +20,9 @@ void kernel()
 
 	logSerial("It works !!!");
 	asm volatile ("int $0x3");
-	// asm volatile ("int $0x4"); 
+	asm volatile ("int $0x4"); 
 }
 
-// void initialize()
-// {
-// 	gdtInit(); // set up GDT and memory segmentation
-// 	// set up IDT and interruptions
-
-// }
 /**
  * TODO: 
  * - Exceptions, IRQ, PIC
