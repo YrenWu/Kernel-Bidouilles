@@ -21,3 +21,4 @@ inb:
     mov 4(%esp), %dx # I/O port address in dx 
     in  %dx, %al   	 # read bytes from I/O port, move it in al
     ret              # return bytes in al
+    

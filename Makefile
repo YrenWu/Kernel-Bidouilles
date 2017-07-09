@@ -8,12 +8,14 @@ EMU_OPT		= -kernel
 KERNEL_NAME = MyKernel.elf
 LOG_FILE	= qemuSerial.log
 
-O_FILES 	= loader.o kernel.o memory.o io.o
+O_FILES 	= loader.o kernel.o memory.o io.o isr.o idt.o
 
 assemble:
 	$(ASM) $(ASMFLAGS) boot/loader.s -o loader.o # -o loader.o io.o 
 	$(ASM) $(ASMFLAGS) Assembly/memory.s -o memory.o
 	$(ASM) $(ASMFLAGS) Assembly/io.s -o io.o
+	$(ASM) $(ASMFLAGS) Assembly/isr.s -o isr.o 
+	$(ASM) $(ASMFLAGS) Assembly/idt.s -o idt.o 
 
 compile:
 	$(CCOMPILER) $(CFLAGS) -c kernel.c -o kernel.o 
@@ -48,6 +50,7 @@ clean:
 	rm *.o 
 	rm $(KERNEL_NAME) 
 	rm boot/$(KERNEL_NAME) 
+	rm bochlog.txt $(LOG_FILE) bochsSerial.txt
 
 	
 	
