@@ -60,33 +60,71 @@ void idtInit()
 }
 
 void printCPU(cpuSize_t cpu) {
- 	/*	size_t eax;
-	size_t ebx;
-	size_t ecx;
-	size_t edx;
-	size_t esi;
-	size_t edi;
-	size_t ebp;
-	size_t cs;
-	size_t ds;
-	size_t ss;
-	size_t es;
-	size_t fs;
-	size_t gs;*/
+	printColor("-----------------------------------------------", BLACK, RED);
+	printColor("------------------ CPU state ------------------", BLACK, RED);
+	printColor("-----------------------------------------------", BLACK, RED);
+	print("");
+	print("-----------------------------------------------");
+	print("------------ CPU general registers ------------");
+	printCat("| EAX : ");
+	printDec(cpu.eax);
+	printCat("| EBX : ");
+	printDec(cpu.ebx);
+	printCat("| ECX : ");
+	printDec(cpu.ecx);
+	printCat("| EDX : ");
+	printDec(cpu.edx);
+	print("");
+	print("");
+	print("-----------------------------------------------");
+	print("------------ CPU segment registers ------------");
+	printCat("| CS : ");
+	printDec(cpu.cs);
+	printCat("| DS : ");
+	printDec(cpu.ds);
+	printCat("| SS : ");
+	printDec(cpu.ss);
+	printCat("| ES : ");
+	printDec(cpu.es);
+	printCat("| FS : ");
+	printDec(cpu.fs);
+	printCat("| GS : ");
+	printDec(cpu.gs);
+	print("");
+	print("");
+	print("-----------------------------------------------");
+	print("---------- EBP and Indexes regiters -----------");
+	printCat("| EBP : ");
+	printDec(cpu.ebp);
+	printCat("| ESI : ");
+	printDec(cpu.esi);
+	printCat("| EDI : ");
+	printDec(cpu.edi);
+	print("");
+	print("");
 }
 
 void printStack(stackSize_t stack) {
-	/*size_t errorCode;
-    size_t eip;
-    size_t cs;
-    size_t eflags; */
+	printColor("-----------------------------------------------", BLACK, RED);
+	printColor("-------------------- Stack --------------------", BLACK, RED);
+	printColor("-----------------------------------------------", BLACK, RED);
+	print("");
+	printCat("| error code : ");
+	printDec(stack.errorCode);
+	printCat("| EIP : ");
+	printDec(stack.eip);
+	printCat("| CS : ");
+	printDec(stack.cs);
+	printCat("| eflags : ");
+	printDec(stack.eflags);
+	print("");
+	print("");
 }
 
 void debug(cpuSize_t cpu, stackSize_t stack, int interrupt) {
-	print("Interrupt Triggered");
-	printDec(-666);
-	printDec(interrupt);
-	printDec(999);	
+	printColor("Interrupt Triggered", RED, BLACK);
+	printStack(stack);
+	printCPU(cpu);
 }
 
 void interruptHandler(cpuSize_t cpu, stackSize_t stack, int interrupt) {

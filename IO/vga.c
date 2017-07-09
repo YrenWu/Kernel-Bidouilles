@@ -117,18 +117,26 @@ void putChar(char c, uint8_t color)
  */ 
 void print(char* str)
 {
-	if(terminal.initialized == false) {
-		// first use of terminal, initialize it
-		initTerm(BACKGROUND, FOREGOUND);
-	} 
-	for (size_t i = 0; str[i] != '\0'; i ++){
-		putChar(str[i], terminal.defaultColor);
-	} 
+	printCat(str);
 	// change line
 	terminal.currentColumn = 0; 
 	terminal.currentRow ++;
 }
  
+ /**
+ * This function prints an string onto the screen
+ * @param char* str Pointer to string to print
+ */ 
+void printCat(char* str)
+{
+	if(terminal.initialized == false) {
+		initTerm(BACKGROUND, FOREGOUND);
+	} 
+	for (size_t i = 0; str[i] != '\0'; i ++){
+		putChar(str[i], terminal.defaultColor);
+	} 
+}
+
 void printHex(uint32_t n)
 {
    // TODO: implement

@@ -18,13 +18,13 @@ void kernel()
 	printColor("Bonjour 0xDEADBABE", LIGHT_MAGENTA, MAGENTA);
 	print("0_0");
 
-	logSerial("It works !!!");
+	//logSerial("It works !!!");
 	asm volatile ("int $0x3");
-	asm volatile ("int $0x4"); 
 }
 
 /**
  * TODO: 
+ * - debug 
  * - Exceptions, IRQ, PIC
  */
 
