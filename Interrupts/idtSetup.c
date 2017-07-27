@@ -9,7 +9,7 @@ idtPtr_t  ptrIdt;
 void idtSetEntry(uint8_t i, uint32_t base, uint16_t selector, uint8_t flags)
 {
    idt[i].offsetLow = base & 0xFFFF;
-   idt[i].offsetHigh = (base >> 16) & 0xFFFF;
+   idt[i].offsetHigh = (base >> 16) & 0xFFFF; 
 
    idt[i].segmentSelector = selector;
    idt[i].reserved = 0;
@@ -62,10 +62,8 @@ void idtInit()
 void printCPU(cpuSize_t cpu) {
 	printColor("-----------------------------------------------", BLACK, RED);
 	printColor("------------------ CPU state ------------------", BLACK, RED);
-	printColor("-----------------------------------------------", BLACK, RED);
 	print("");
-	print("-----------------------------------------------");
-	print("------------ CPU general registers ------------");
+	print("-------------- General registers --------------");
 	printCat("| EAX : ");
 	printHex(cpu.eax);
 	printCat("| EBX : ");
@@ -76,57 +74,51 @@ void printCPU(cpuSize_t cpu) {
 	printHex(cpu.edx);
 	print("");
 	print("");
-	print("-----------------------------------------------");
-	print("------------ CPU segment registers ------------");
+	print("-------------- Segment registers --------------");
 	printCat("| CS : ");
 	printHex(cpu.cs);
 	printCat("| DS : ");
 	printHex(cpu.ds);
 	printCat("| SS : ");
 	printHex(cpu.ss);
-	printCat("| ES : ");
-	printHex(cpu.es);
-	printCat("| FS : ");
-	printHex(cpu.fs);
-	printCat("| GS : ");
-	printHex(cpu.gs);
 	print("");
 	print("");
-	print("-----------------------------------------------");
-	print("---------- EBP and Indexes regiters -----------");
+	print("-------------- Pointer registers --------------");
 	printCat("| EBP : ");
 	printHex(cpu.ebp);
+	printCat("| ESP : ");
+	printHex(cpu.esp);
+	printCat("| EIP : ");
+	printHex(cpu.eip);
+	print("");
+	print("");
+	print("--------------- Index registers ---------------");
 	printCat("| ESI : ");
 	printHex(cpu.esi);
 	printCat("| EDI : ");
 	printHex(cpu.edi);
 	print("");
 	print("");
-}
-
-void printStack(stackSize_t stack) {
-	printColor("-----------------------------------------------", BLACK, RED);
-	printColor("-------------------- Stack --------------------", BLACK, RED);
-	printColor("-----------------------------------------------", BLACK, RED);
-	print("");
 	printCat("| error code : ");
-	printHex(stack.errorCode);
-	printCat("| EIP : ");
-	printHex(stack.eip);
-	printCat("| CS : ");
-	printHex(stack.cs);
+	printHex(cpu.errorCode);
 	printCat("| eflags : ");
-	printHex(stack.eflags);
+	printHex(cpu.eflags);
 	print("");
 	print("");
+	printCat("| ES : ");
+	printHex(cpu.es);
+	printCat("| SS : ");
+	printHex(cpu.fs);
+	printCat("| GS : ");
+	printHex(cpu.gs);
 }
 
-void debug(cpuSize_t cpu, stackSize_t stack, int interrupt) {
+void debug(cpuSize_t cpu) {
 	printColor("Interrupt Triggered", RED, BLACK);
-	printStack(stack);
+	printHex(cpu.intNumber);
 	printCPU(cpu);
 }
 
-void interruptHandler(cpuSize_t cpu, stackSize_t stack, int interrupt) {
-	debug(cpu, stack, interrupt);
+void interruptHandler(cpuSize_t cpu) {
+	debug(cpu);
 }

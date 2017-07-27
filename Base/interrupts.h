@@ -42,23 +42,31 @@ typedef struct idtPtr idtPtr_t;
 
 struct stateCPU
 {
-	/* general registers */
-	size_t eax;
-	size_t ebx;
-	size_t ecx;
-	size_t edx;
+	uint32_t ds;
 
 	/* source and destination indexes */
-	size_t esi;
-	size_t edi;
+	uint32_t edi;
+	uint32_t esi;
+	
 	/* base pointers */
-	size_t ebp;
-	//size_t esp;
+	uint32_t ebp;
+	uint32_t esp;
 
+	/* general registers */
+	uint32_t ebx;
+	uint32_t edx;
+	uint32_t ecx;
+	uint32_t eax;
+
+	uint32_t intNumber;
+	uint32_t errorCode;
+	uint32_t eip;
+	uint32_t cs;
+	uint32_t eflags;
+	uint32_t useresp;
 	/* segment registers */
-	size_t cs;
-	size_t ds;
-	size_t ss;
+	
+	uint32_t ss;
 	size_t es;
 	size_t fs;
 	size_t gs;
@@ -66,15 +74,6 @@ struct stateCPU
 } __attribute__((packed));
 typedef struct stateCPU cpuSize_t;
 
-struct stateStack
-{
-	size_t errorCode;
-    size_t eip;
-    size_t cs;
-    size_t eflags;
-	
-}__attribute__((packed));
-typedef struct stateStack stackSize_t;
 
 // set accessible assembly handlers in C code
 extern void isr0();

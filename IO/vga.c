@@ -137,7 +137,7 @@ void print(char* str)
 	terminal.currentRow ++;
 }
 
-void printBase(uint32_t n, uint8_t* numbers, size_t base)
+void printBase(uint32_t n, uint8_t* numbers, size_t base, size_t  size)
 {
 	if(terminal.initialized == false) {
 	initTerm(BACKGROUND, FOREGOUND);
@@ -149,7 +149,7 @@ void printBase(uint32_t n, uint8_t* numbers, size_t base)
       	n = -n;
     } 
 
-    char charsToDisplay[10]; // digit numbers 
+    char charsToDisplay[size]; // digit numbers 
     char num;
     int i = 0;
     while (n > 0) { 
@@ -168,14 +168,20 @@ void printBase(uint32_t n, uint8_t* numbers, size_t base)
 void printHex(uint32_t n)
 {
 	uint8_t numbers[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-	printBase(n, numbers, 16);
+	printBase(n, numbers, 16, 10);
 }
 
-void printDec(int n)
+void printDec(uint32_t n)
 {
 	uint8_t numbers[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-	printBase(n, numbers, 10);
+	printBase(n, numbers, 10, 10);
 } 
+
+void printBin(uint32_t n)
+{
+	uint8_t numbers[] = {'0', '1'};
+	printBase(n, numbers, 2, 100);
+}
 
  /**
  * Display string with colors
