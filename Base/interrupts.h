@@ -77,16 +77,23 @@ typedef struct idtPtr idtPtr_t;
 // typedef struct stateCPU cpuSize_t;
 
 
-typedef struct registers
+typedef struct stateCPU
 {
+	/* Segments */
 	uint32_t gs, fs, es, ds;
-	// uint32_t int_no, err_code;    // Interrupt number and error code (if applicable)
-   //uint32_t ds;                  // Data segment selector
-    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; // Pushed by pusha.
-    uint32_t int_no, err_code;    // Interrupt number and error code (if applicable)
-     // uint32_t a, b;
-   
-   //uint32_t eip, cs, eflags, useresp, ss; // Pushed by the processor automatically.
+
+	/* Indexes */
+    uint32_t edi, esi;
+
+    /* Pointers */
+    uint32_t ebp, esp;
+
+    /* General registers */
+    uint32_t ebx, edx, ecx, eax; 
+
+    uint32_t interrupt;		// Interrupt number
+    uint32_t errorCode;    	// Error code (if applicable), or 0
+
 } cpuSize_t; 
 
 // set accessible assembly handlers in C code

@@ -19,7 +19,7 @@ void kernel()
 	// print("0_0");
 
 	//logSerial("It works !!!");
-	asm volatile ("int $4");
+	asm volatile ("int $3");
 }
 
 /**
