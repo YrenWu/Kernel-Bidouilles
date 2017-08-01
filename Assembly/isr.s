@@ -5,7 +5,7 @@
 isr\int:
     cli
     pushl $0                   # error code 0
-    pushl \int                 # interrupt number
+    pushl $\int                 # interrupt number
     jmp commonInterruptHandler    # jump to interrupt handler routine
 .endm
 
@@ -13,79 +13,9 @@ isr\int:
 .global isr\int
 isr\int:
     cli
-    pushl \int                 # interrupt number
+    pushl $\int                 # interrupt number
     jmp commonInterruptHandler    # jump to interrupt handler routine
 .endm
-
-commonInterruptHandler:             # generic interrupt handler
-    # save registers on the stack
-    push %eax
-    push %ebx
-    push %ecx
-    push %edx
-
-    # source and destination indexes, base pointer 
-    push %esi
-    push %edi
-    push %ebp
-
-    # segment registers 
-    # push %cs
-    push %ds
-    push %ss
-    push %es
-    push %fs
-    push %gs
-
-    # call C function
-    call interruptHandler
-
-    # registers restauration from stack
-    pop %gs
-    pop %fs
-    pop %es
-    pop %ss
-    pop %ds
-    # pop %cs
-    pop %ebp
-    pop %edi
-    pop %esi
-    pop %edx
-    pop %ecx
-    pop %ebx
-    pop %eax
-
-    # esp restauration
-    add $8, %esp
-    iret
-
-
-# isr_common_stub:
-#    pusha                    # Pushes edi,esi,ebp,esp,ebx,edx,ecx,eax
-
-#    mov  %ds, %ax               # Lower 16-bits of eax = ds.
-#    push %eax                 # save the data segment descriptor
-
-#    mov $0x10, %ax # load the kernel data segment descriptor
-#    mov %ax, %ds
-#    mov %ax, %es
-#    mov %ax, %fs
-#    mov %ax, %gs
-
-#    call interruptHandler
-
-#    pop %eax        # reload the original data segment descriptor
-#    mov %ax, %ds
-#    mov %ax, %es
-#    mov %ax, %fs
-#    mov %ax, %gs
-
-#    popa                     # Pops edi,esi,ebp...
-#    add $8, %esp     # Cleans up the pushed error code and pushed ISR number
-#    sti
-#    iret           # pops 5 things at once: CS, EIP, EFLAGS, SS, and ESP 
-
-
 
 # create interruption handlers
 noErrorCodeISR 0    # 0x0 divide by zero            FAULT 
@@ -120,3 +50,86 @@ noErrorCodeISR 28   # 0x15-0x1D Reserved
 noErrorCodeISR 29   # 0x15-0x1D Reserved 
 errorCodeISR 30     # 0x1E Security Exception       
 noErrorCodeISR 31   # 0x1F Reserved
+
+commonInterruptHandler:             # generic interrupt handler
+    pushal
+    pushl %ds
+    pushl %es
+    pushl %fs
+    pushl %gs
+    # addl $48, %esp                 
+    
+    call interruptHandler # call the C handler with exception code
+    # subl $48, %esp
+
+    # registers restauration from stack
+    popl %gs
+    popl %fs
+    popl %es
+    popl %ds
+
+    popal
+
+    # # esp restauration
+    addl $8, %esp
+    iret
+
+    # |---------------------|
+    # |       Errorcode     |
+    # |       IntNumber     |
+    # |       EDI           |
+    # |       ESI           |
+    # |       EBP           |
+    # |       ESP           | 
+    # |       EBX           | 
+    # |       ECX           | 
+    # |       EDX           |
+    # |       ECX           |
+    # |       EAX           |
+    # |       DS            |
+    # |       ES            |
+    # |       FS            |
+    # |       GS            |
+    # |=====================| <--------
+
+# common:
+#     pushal
+
+#     pushl %ds
+#     pushl %es
+#     pushl %fs
+#     pushl %gs
+
+#     addl $48, %esp                  // 4 4-bytes segments pushed
+#                                     // + 8 4-bytes registers (pushal)
+# `                                   // esp points on exception code
+
+#     call handler                    // call the C handler with exception code
+
+#     subl $48, %esp
+
+#     popl %gs
+#     popl %fs
+#     popl %es
+#     popl %ds
+
+#     popal
+
+#     addl $8, %esp                   // 4-byte error code + 4-byte exception number
+#     iret
+
+
+# exception_de_handler:
+#     pushl $0                        // Fake error code
+#     pushl $0                        // interrupt number
+#     jmp common
+
+# exception_gp_handler:
+#     // error code is pushed by µproc.
+#     pushl $13                       // interrupt number
+#     jmp common
+
+# exception_pf_handler:
+#     // error code is pushed by µproc.
+#     pushl $14                       // interrupt number
+#     jmp common

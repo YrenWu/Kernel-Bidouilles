@@ -15,11 +15,11 @@ void kernel()
 	idtInit();
 
 	// Display some messages
-	printColor("Bonjour 0xDEADBABE", LIGHT_MAGENTA, MAGENTA);
-	print("0_0");
+	// printColor("Bonjour 0xDEADBABE", LIGHT_MAGENTA, MAGENTA);
+	// print("0_0");
 
 	//logSerial("It works !!!");
-	asm volatile ("int $0x3");
+	asm volatile ("int $4");
 }
 
 /**

@@ -40,40 +40,54 @@ struct idtPtr
 } __attribute__((packed));
 typedef struct idtPtr idtPtr_t;
 
-struct stateCPU
+// struct stateCPU
+// {
+
+// 	/* source and destination indexes */
+// 	size_t edi;
+// 	size_t esi;
+	
+// 	/* base pointers */
+// 	size_t ebp;
+// 	size_t esp;
+
+// 	/* general registers */
+// 	size_t ebx;
+// 	size_t edx;
+// 	size_t ecx;
+// 	size_t eax;
+
+// 	 segment registers 
+	
+// 	size_t ds;
+// 	size_t es;
+// 	size_t fs;
+// 	size_t gs;
+
+
+// 	size_t intNumber;
+// 	size_t errorCode;
+// 	size_t eip;
+// 	size_t cs;
+// 	size_t ss;
+// 	size_t eflags;
+// 	size_t useresp;
+
+// } __attribute__((packed));
+// typedef struct stateCPU cpuSize_t;
+
+
+typedef struct registers
 {
-	uint32_t ds;
-
-	/* source and destination indexes */
-	uint32_t edi;
-	uint32_t esi;
-	
-	/* base pointers */
-	uint32_t ebp;
-	uint32_t esp;
-
-	/* general registers */
-	uint32_t ebx;
-	uint32_t edx;
-	uint32_t ecx;
-	uint32_t eax;
-
-	uint32_t intNumber;
-	uint32_t errorCode;
-	uint32_t eip;
-	uint32_t cs;
-	uint32_t eflags;
-	uint32_t useresp;
-	/* segment registers */
-	
-	uint32_t ss;
-	size_t es;
-	size_t fs;
-	size_t gs;
-
-} __attribute__((packed));
-typedef struct stateCPU cpuSize_t;
-
+	uint32_t gs, fs, es, ds;
+	// uint32_t int_no, err_code;    // Interrupt number and error code (if applicable)
+   //uint32_t ds;                  // Data segment selector
+    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; // Pushed by pusha.
+    uint32_t int_no, err_code;    // Interrupt number and error code (if applicable)
+     // uint32_t a, b;
+   
+   //uint32_t eip, cs, eflags, useresp, ss; // Pushed by the processor automatically.
+} cpuSize_t; 
 
 // set accessible assembly handlers in C code
 extern void isr0();
