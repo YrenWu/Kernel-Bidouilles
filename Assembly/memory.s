@@ -1,3 +1,7 @@
+#
+#   Assembly for set up Global Descriptor Table with LGDT x86 instruction (takes a pointer to GDT)
+#
+
 .global gdtFlush  	# make this function global, this will be visible in C code
 .extern ptrGdt   	# take an extern label form C code
 

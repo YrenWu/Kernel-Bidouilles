@@ -40,43 +40,6 @@ struct idtPtr
 } __attribute__((packed));
 typedef struct idtPtr idtPtr_t;
 
-// struct stateCPU
-// {
-
-// 	/* source and destination indexes */
-// 	size_t edi;
-// 	size_t esi;
-	
-// 	/* base pointers */
-// 	size_t ebp;
-// 	size_t esp;
-
-// 	/* general registers */
-// 	size_t ebx;
-// 	size_t edx;
-// 	size_t ecx;
-// 	size_t eax;
-
-// 	 segment registers 
-	
-// 	size_t ds;
-// 	size_t es;
-// 	size_t fs;
-// 	size_t gs;
-
-
-// 	size_t intNumber;
-// 	size_t errorCode;
-// 	size_t eip;
-// 	size_t cs;
-// 	size_t ss;
-// 	size_t eflags;
-// 	size_t useresp;
-
-// } __attribute__((packed));
-// typedef struct stateCPU cpuSize_t;
-
-
 typedef struct stateCPU
 {
 	/* Segments */
@@ -96,7 +59,9 @@ typedef struct stateCPU
 
 } cpuSize_t; 
 
-// set accessible assembly handlers in C code
+/*  set accessible assembly handlers in C code 
+	For Exceptions
+*/
 extern void isr0();
 extern void isr1();
 extern void isr2();
@@ -128,6 +93,25 @@ extern void isr27();
 extern void isr28();
 extern void isr29();
 extern void isr30();
-extern void isr31(); 
+extern void isr31();
+
+/*  set up irqs
+	For interruptions */
+extern void irq0();
+extern void irq1();
+extern void irq2();
+extern void irq3();
+extern void irq4();
+extern void irq5();
+extern void irq6();
+extern void irq7();
+extern void irq8();
+extern void irq9();
+extern void irq10();
+extern void irq11();
+extern void irq12();
+extern void irq13();
+extern void irq14();
+extern void irq15();
 
 #endif

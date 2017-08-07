@@ -1,3 +1,8 @@
+#
+#   Assembly for out and in x86 instructions:
+# 	outb allows to send data to a port (takes number and data to send)
+#	inb allows to read data from a port (takes port number in argument and return data bytes)
+
         
 # outb - send 8 bits to I/O port
 # stack : [esp + 8] data

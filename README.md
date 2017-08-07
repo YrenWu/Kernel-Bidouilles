@@ -2,7 +2,6 @@
 
 Ce projet est une série d'exercices pour apprendre le fonctionnement des systèmes d'exploitation. 
 Il est basé sur Little OS Book : https://github.com/littleosbook/littleosbook
-et les tutoriels du OS Dev Wiki : http://wiki.osdev.org
 et différentes ressources sur internet
 
 Il est émulable avec Qemu ou Bochs (cf Makefile) et utilise Grub comme bootloader
@@ -22,3 +21,8 @@ La GDT est en place (mode flat, espace d'adressage de : base=0x00000000, limit=0
 - un Data Segment (privilège 3)
 
 (Readme en cours de rédaction, à venir : les interruptions)
+
+
+Ressources:
+http://wiki.osdev.org
+http://www.jamesmolloy.co.uk

@@ -3,6 +3,7 @@
 
 extern void loadIDT(); // lidt asm code
 
+
 idtEntry_t idt[256];
 idtPtr_t  ptrIdt;
 
@@ -23,6 +24,7 @@ void idtInit()
    ptrIdt.lastAddress = sizeof(idtEntry_t) * 256 -1;
    ptrIdt.firstAddress  = (uint32_t)&idt;
 
+   /* Exceptions */
    idtSetEntry(0, (uint32_t)isr0 , SELECTOR, FLAGS);
    idtSetEntry(1, (uint32_t)isr1 , SELECTOR, FLAGS);
    idtSetEntry(2, (uint32_t)isr2 , SELECTOR, FLAGS);
@@ -55,6 +57,26 @@ void idtInit()
    idtSetEntry(29, (uint32_t)isr29 , SELECTOR, FLAGS);
    idtSetEntry(30, (uint32_t)isr30 , SELECTOR, FLAGS);
    idtSetEntry(31, (uint32_t)isr31 , SELECTOR, FLAGS);
+
+   /* IRQ rempapping for others entries in IDT (interruptions) */
+   irqRemap();
+
+   idtSetEntry(32, (uint32_t)irq0, SELECTOR, FLAGS);
+   idtSetEntry(33, (uint32_t)irq1, SELECTOR, FLAGS);
+   idtSetEntry(34, (uint32_t)irq2, SELECTOR, FLAGS);
+   idtSetEntry(35, (uint32_t)irq3, SELECTOR, FLAGS);
+   idtSetEntry(36, (uint32_t)irq4, SELECTOR, FLAGS);
+   idtSetEntry(37, (uint32_t)irq5, SELECTOR, FLAGS);
+   idtSetEntry(38, (uint32_t)irq6, SELECTOR, FLAGS);
+   idtSetEntry(39, (uint32_t)irq7, SELECTOR, FLAGS);
+   idtSetEntry(40, (uint32_t)irq8, SELECTOR, FLAGS);
+   idtSetEntry(41, (uint32_t)irq9, SELECTOR, FLAGS);
+   idtSetEntry(42, (uint32_t)irq10, SELECTOR, FLAGS);
+   idtSetEntry(43, (uint32_t)irq11, SELECTOR, FLAGS);
+   idtSetEntry(44, (uint32_t)irq12, SELECTOR, FLAGS);
+   idtSetEntry(45, (uint32_t)irq13, SELECTOR, FLAGS);
+   idtSetEntry(46, (uint32_t)irq14, SELECTOR, FLAGS);
+   idtSetEntry(47, (uint32_t)irq15, SELECTOR, FLAGS);
 
    loadIDT((uint32_t)&ptrIdt);
 }
@@ -108,5 +130,5 @@ void debug(cpuSize_t cpu) {
 }
 
 void interruptHandler(cpuSize_t cpuState) {
-	debug(cpuState);
+  debug(cpuState);
 }
