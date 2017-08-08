@@ -7,20 +7,15 @@
 #include "IO/serial.c"
 
 #include "Memory/gdtSetup.c"
-#include "Interrupts/PIC/pic8259.c"
+#include "Interrupts/PIC/commonPics.c"
 #include "Interrupts/idtSetup.c"
-#include "Interrupts/isr.c"
 
 
 void kernel()
 {
 	gdtInit();
 	idtInit();
-
-	// Display some messages
-	printColor("Bonjour 0xDEADBABE", LIGHT_MAGENTA, MAGENTA);
-	print("0_0");
-
+	
 	logSerial("It works !!!");
 	asm volatile ("int $34");
 }

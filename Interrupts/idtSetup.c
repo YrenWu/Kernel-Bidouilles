@@ -61,6 +61,7 @@ void idtInit()
    /* IRQ rempapping for others entries in IDT (interruptions) */
    irqRemap();
 
+   // Master PICS
    idtSetEntry(32, (uint32_t)irq0, SELECTOR, FLAGS);
    idtSetEntry(33, (uint32_t)irq1, SELECTOR, FLAGS);
    idtSetEntry(34, (uint32_t)irq2, SELECTOR, FLAGS);
@@ -69,6 +70,8 @@ void idtInit()
    idtSetEntry(37, (uint32_t)irq5, SELECTOR, FLAGS);
    idtSetEntry(38, (uint32_t)irq6, SELECTOR, FLAGS);
    idtSetEntry(39, (uint32_t)irq7, SELECTOR, FLAGS);
+
+   // Slave PICS
    idtSetEntry(40, (uint32_t)irq8, SELECTOR, FLAGS);
    idtSetEntry(41, (uint32_t)irq9, SELECTOR, FLAGS);
    idtSetEntry(42, (uint32_t)irq10, SELECTOR, FLAGS);

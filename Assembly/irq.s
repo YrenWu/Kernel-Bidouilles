@@ -31,6 +31,7 @@ irq 14, 46
 irq 15, 47
 
 commonIrqStub: 
+
     pushal
     pushl %ds
     pushl %es
