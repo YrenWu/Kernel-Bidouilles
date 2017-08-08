@@ -8,6 +8,10 @@
  */
 void putChar(char c, uint8_t color)
 {
+	 if(terminal.initialized == false) {
+		initTerm(BACKGROUND, FOREGOUND);
+	} 
+
 	const size_t index = (FB_COLUMN_SIZE * terminal.currentRow) + terminal.currentColumn; // buffer index
 	vgaFrameBuffer[index] = ((uint16_t)color << 8) | c;
 	terminal.currentColumn ++;
@@ -62,10 +66,6 @@ void print(char* str)
  */
 void printBase(uint32_t n, uint8_t* numbers, size_t base, size_t  size)
 {
-	if(terminal.initialized == false) {
-	initTerm(BACKGROUND, FOREGOUND);
-	} 
-
     // if negative number
 	if (n < 0) {
      	putChar('-', terminal.defaultColor);
@@ -127,9 +127,6 @@ void printBin(uint32_t n)
  */
  void printColor(char* str, int background, int foreground)
  {
- 	if(terminal.initialized == false) {
-		initTerm(BACKGROUND, FOREGOUND);
-	} 
  	uint8_t color = setColor(background, foreground);
  	for (size_t i = 0; str[i] != '\0'; i ++){
 		putChar(str[i], color);

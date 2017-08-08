@@ -78,5 +78,8 @@ void acknowledge(uint8_t interrupt)
 void irqHandler(cpuSize_t regs)
 {
   acknowledge(regs.interrupt);
-  debug(regs);
+  if (interruptCallbacks[regs.interrupt] != 0) {
+    isr_t handler = interruptCallbacks[regs.interrupt];
+    handler(regs);
+  }
 } 

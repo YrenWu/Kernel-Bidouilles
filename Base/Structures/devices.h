@@ -22,4 +22,12 @@ typedef struct Terminal {
 	uint16_t defaultColor;
 } Terminal;
 
+/** Clock of the computer (RTC)
+ * 	Handle by interrutions, this is used for Programmable Interval Timer  
+ */
+typedef struct Clock {
+	uint32_t timer;
+	boolean initialized;
+} Clock;
+
 #endif
