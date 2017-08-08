@@ -96,6 +96,10 @@ void writeSerial(char* str, uint16_t comPort) {
    } 
 }
 
+/**
+ * Write data through serial port
+ * @param message The pointer to the string to write
+ */
 void logSerial(char *message) {
    char *flag;
    if (com1.initialized == false) {

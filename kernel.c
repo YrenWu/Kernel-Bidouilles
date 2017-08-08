@@ -2,7 +2,7 @@
 #include "Base/Structures/devices.h"
 #include "Base/Structures/descriptors.h"
 #include "Base/Structures/interrupts.h"
-#include "Base/Functions/display.c"
+#include "Base/Functions/display.c"	// base printing and debug functions
 
 #include "Core/IO/vga.c"
 #include "Core/IO/serial.c"
