@@ -48,6 +48,6 @@ commonIrqStub:
 
     popal
 
-    # # esp restauration
+    # esp restauration
     addl $8, %esp
     iret

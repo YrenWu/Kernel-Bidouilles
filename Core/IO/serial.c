@@ -1,3 +1,11 @@
+/*
+   serial.c allows to write in a log file on host system through serial port.
+   It can be useful for debugging or log events
+
+   Interacts with COM 1 port. First, we need to initialize COM ports 
+   sending bytes through them.
+*/
+
 // Base addresses of serial ports (start of port buffer)
 #define COM1_ADDR    0x3F8 
 #define COM2_ADDR    0x2F8
@@ -25,6 +33,7 @@ extern unsigned char inb(unsigned short port);
 SerialPort com1 = {
    COM1_ADDR, false
 };
+
 SerialPort com2 = {
    COM2_ADDR, false
 };

@@ -20,7 +20,7 @@ La GDT est en place (mode flat, espace d'adressage de : base=0x00000000, limit=0
 - un Code Segment (privilège 3)
 - un Data Segment (privilège 3)
 
-(Readme en cours de rédaction, à venir : les interruptions)
+L'IDT est en place avec les exceptions de 0 à 31 
 
 
 Ressources:
