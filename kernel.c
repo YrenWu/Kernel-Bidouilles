@@ -16,13 +16,11 @@ void kernel()
 {
 	gdtInit();
 	idtInit();
+	initTerm(BLACK, MAGENTA);
 	initTimer(50);
 	
 	logSerial("It works !!!");
-	asm volatile ("int $32");
-	asm volatile ("int $32");
-	asm volatile ("int $32");
-	asm volatile ("int $32");
+	asm volatile ("int $0x0");
 }
 
 

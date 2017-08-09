@@ -1,5 +1,5 @@
 #
-#   Assembly for Interrupt request
+#   Assembly for Interrupt request (Interruptions 32-47)
 #
 
 .altmacro

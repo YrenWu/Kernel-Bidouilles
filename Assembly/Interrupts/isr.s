@@ -1,5 +1,5 @@
 #
-#   Assembly for Interrupt service routines and common interrupt handler
+#   Assembly for Interrupt service routines and common interrupt handler (Exceptions 0-31)
 #
 
 .altmacro
@@ -60,11 +60,9 @@ commonInterruptHandler:             # generic interrupt handler
     pushl %ds
     pushl %es
     pushl %fs
-    pushl %gs
-    # addl $48, %esp                 
+    pushl %gs             
     
     call interruptHandler # call the C handler with exception code
-    # subl $48, %esp
 
     # registers restauration from stack
     popl %gs
@@ -74,6 +72,6 @@ commonInterruptHandler:             # generic interrupt handler
 
     popal
 
-    # # esp restauration
+    # esp restauration
     addl $8, %esp
     iret

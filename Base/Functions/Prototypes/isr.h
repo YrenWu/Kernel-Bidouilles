@@ -9,4 +9,8 @@ typedef void (*isr_t)(cpu);
 void registerInterruptHandler(uint8_t n, isr_t handler); 
 isr_t interruptCallbacks[256];
 
+Clock clock = {
+  0, false
+};
+
 #endif 

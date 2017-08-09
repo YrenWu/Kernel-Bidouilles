@@ -11,11 +11,6 @@
 #define PIT_CMD_PORT    0x43
 #define REPEAT_MODE     0x36
 
-
-Clock clock = {
-  0, false
-};
-
 extern void outb();
 void printTimer(); 
 
@@ -27,7 +22,7 @@ void registerInterruptHandler(uint8_t n, isr_t handler)
 void timerCallback(cpuSize_t regs)
 {
    clock.timer++;
-   // printTimer();
+   //printTimer();
 }
 
 void printTimer()
