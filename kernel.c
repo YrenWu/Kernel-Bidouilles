@@ -26,7 +26,7 @@ void kernel()
 	initExceptions();
 	
 	logSerial("It works !!!");
-	asm volatile ("int $0");
+	asm volatile ("int $1");
 }
 
 

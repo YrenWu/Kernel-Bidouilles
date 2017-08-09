@@ -3,6 +3,11 @@
 
 // Exceptions
 #define EXCEPT0 0
+#define EXCEPT1 1
+#define EXCEPT2 2
+#define EXCEPT6 6
+#define EXCEPT7 7
+
 
 // Interruptions
 #define IRQ0 32		// PIT 8254  PIC-master 0 : Timer | PIC-Slave 8 : Real Time Clock (CMOS)
