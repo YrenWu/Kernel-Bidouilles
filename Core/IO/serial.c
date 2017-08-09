@@ -19,8 +19,6 @@
 #define MODEM_STATUS_REG(baseAddr)  (baseAddr + 6)
 #define SCRATCH_REG(baseAddr)       (baseAddr + 7)
 
-extern void outb();
-
 /** inb:
  *  Lit un octet reçu d'un port E/S.
  *

@@ -26,6 +26,8 @@
 #define FB_ROW_SIZE     25
 #define FB_COLUMN_SIZE  80
 
+extern void outb();
+
 /*	Display strings or character on screen 	*/
 void printColor(char* str, int background, int foreground);
 void putChar(char c, uint8_t color); 

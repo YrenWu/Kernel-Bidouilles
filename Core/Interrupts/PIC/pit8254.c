@@ -9,7 +9,6 @@
 #define PIT_CMD_PORT    0x43
 #define REPEAT_MODE     0x36
 
-extern void outb();
 void printTimer();  
 
 void timerCallback(cpuSize_t regs)

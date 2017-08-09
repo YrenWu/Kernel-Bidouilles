@@ -7,13 +7,13 @@
 
 #include "Base/Functions/display.c"	// base printing and debug Functions
 
+#include "Core/Interrupts/PIC/pic8259.c"
 #include "Core/Interrupts/PIC/pit8254.c"
 #include "Core/Interrupts/Exceptions/exceptions.c"
 
 #include "Core/IO/vga.c"
 #include "Core/IO/serial.c"
 #include "Core/Memory/gdtSetup.c"
-#include "Core/Interrupts/commonPics.c"
 #include "Core/Interrupts/idtSetup.c"
 
 
@@ -26,7 +26,7 @@ void kernel()
 	initExceptions();
 	
 	logSerial("It works !!!");
-	asm volatile ("int $0");
+	asm volatile ("int $1");
 }
 
 
