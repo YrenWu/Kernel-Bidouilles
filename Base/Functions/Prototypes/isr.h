@@ -1,7 +1,10 @@
 #ifndef ISR_H
 #define ISR_H
 
-// useful irqs
+// Exceptions
+#define EXCEPT0 0
+
+// Interruptions
 #define IRQ0 32		// PIT 8254  PIC-master 0 : Timer | PIC-Slave 8 : Real Time Clock (CMOS)
 
 // Enables registration of callbacks for interrupts or IRQs.

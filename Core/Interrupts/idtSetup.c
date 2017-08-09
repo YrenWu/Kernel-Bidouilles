@@ -85,6 +85,13 @@ void idtInit()
 }
 
 
-void interruptHandler(cpuSize_t cpuState) {
-  debug(cpuState);
+void interruptHandler(cpuSize_t cpuState) 
+{
+  /* If a routine exists, execute it */
+  if (interruptCallbacks[cpuState.interrupt] != 0) {
+    isr_t handler = interruptCallbacks[cpuState.interrupt];
+    handler(cpuState);
+  } else {
+    debug(cpuState); // else debug mode
+  }
 }

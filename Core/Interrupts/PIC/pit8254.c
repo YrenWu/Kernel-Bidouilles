@@ -1,10 +1,8 @@
-#include "../../../Base/Functions/Prototypes/isr.h"
-
 /* I/O port     Usage
-0x40         Channel 0 data port (read/write)
-0x41         Channel 1 data port (read/write)
-0x42         Channel 2 data port (read/write)
-0x43         Mode/Command register (write only, a read is ignored)
+  0x40         Channel 0 data port (read/write)
+  0x41         Channel 1 data port (read/write)
+  0x42         Channel 2 data port (read/write)
+  0x43         Mode/Command register (write only, a read is ignored)
 */
 
 #define PIT_DATA_PORT0  0x40
@@ -12,12 +10,7 @@
 #define REPEAT_MODE     0x36
 
 extern void outb();
-void printTimer(); 
-
-void registerInterruptHandler(uint8_t n, isr_t handler)
-{
-  interruptCallbacks[n] = handler;
-} 
+void printTimer();  
 
 void timerCallback(cpuSize_t regs)
 {

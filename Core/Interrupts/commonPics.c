@@ -42,18 +42,18 @@ _______________________________________________________
 static void irqRemap()
 {
   /* Send ICW1 to port A */
-outb(MASTER_PORT_ADDR_A, ICW1_MASTER);
-outb(SLAVE_PORT_ADDR_A, ICW1_SLAVE);
+  outb(MASTER_PORT_ADDR_A, ICW1_MASTER);
+  outb(SLAVE_PORT_ADDR_A, ICW1_SLAVE);
 
-/* Send others ICW to port B */
-outb(MASTER_PORT_ADDR_B, ICW2_MASTER);
-outb(SLAVE_PORT_ADDR_B,ICW2_SLAVE);
+  /* Send others ICW to port B */
+  outb(MASTER_PORT_ADDR_B, ICW2_MASTER);
+  outb(SLAVE_PORT_ADDR_B,ICW2_SLAVE);
 
-outb(MASTER_PORT_ADDR_B,ICW3_MASTER);
-outb(SLAVE_PORT_ADDR_B,ICW3_SLAVE);
+  outb(MASTER_PORT_ADDR_B,ICW3_MASTER);
+  outb(SLAVE_PORT_ADDR_B,ICW3_SLAVE);
 
-outb(MASTER_PORT_ADDR_B,ICW4_MASTER);
-outb(SLAVE_PORT_ADDR_B, ICW4_SLAVE);
+  outb(MASTER_PORT_ADDR_B,ICW4_MASTER);
+  outb(SLAVE_PORT_ADDR_B, ICW4_SLAVE);
 
 } 
 
@@ -81,5 +81,13 @@ void irqHandler(cpuSize_t regs)
   if (interruptCallbacks[regs.interrupt] != 0) {
     isr_t handler = interruptCallbacks[regs.interrupt];
     handler(regs);
+  } else { 
+    debug(regs);
   }
 } 
+
+void registerInterruptHandler(uint8_t n, isr_t handler)
+{
+  interruptCallbacks[n] = handler;
+}
+
