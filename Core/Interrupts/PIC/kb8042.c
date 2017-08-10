@@ -13,13 +13,39 @@ void initKeyboard()
 void kbCallback(cpuSize_t registers)
 {
 	unsigned char bytes;
+	unsigned char letter;
 
     do {
         if(inb(KEYB_DATA_PORT) != bytes) { // if new char
             bytes = inb(KEYB_DATA_PORT);
-            if(bytes > 0) {
-            	printHex(bytes);
-            } 
+            if(bytes <= 0x31) {
+            	letter = hexToLetter(bytes);
+            	putChar(letter, terminal.defaultColor);
+         	} 
         }
     } while(true);
+}
+
+unsigned char hexToLetter(char c)
+{
+	char letter;
+
+	uint8_t numbers[] = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
+	uint8_t lettersUp[] = {'a','z','e','r','t','y','u','i','o','p'};
+	uint8_t lettersMiddle[] = {'q','s','d','f','g','h','j','k','l','m'};
+	uint8_t lettersDown[] = {'w','x','c','v','b','n'};
+
+	printHex(c);
+	
+	if((c >= 0x2) && (c <= 0xB)) { 
+		return numbers[c-2];
+	} else if ((c >= 0x10) && (c <= 0x19)) {
+		return lettersUp[c-16];
+	} else if ((c >= 0x1E)  && (c <= 0x27)) {
+		return lettersMiddle[c-30];
+	} else if ((c >= 0x2C)  && (c <= 0x31)) {
+		return lettersDown[c-44];
+	}  else if (c == 0x1C) {
+ 		print("");
+ 	}
 }
