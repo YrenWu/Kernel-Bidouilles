@@ -27,6 +27,7 @@
 #define FB_COLUMN_SIZE  80
 
 extern void outb();
+extern unsigned char inb(unsigned short port);
 
 /*	Display strings or character on screen 	*/
 void printColor(char* str, int background, int foreground);

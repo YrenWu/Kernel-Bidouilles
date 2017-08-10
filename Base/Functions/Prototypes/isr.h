@@ -8,9 +8,9 @@
 #define EXCEPT6 6
 #define EXCEPT7 7
 
-
 // Interruptions
 #define IRQ0 32		// PIT 8254  PIC-master 0 : Timer | PIC-Slave 8 : Real Time Clock (CMOS)
+#define IRQ1 33		// PS2 / Keyboard Interruption
 
 // Enables registration of callbacks for interrupts or IRQs.
 typedef void (*isr_t)(cpu);

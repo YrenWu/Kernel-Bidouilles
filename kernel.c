@@ -9,6 +9,7 @@
 
 #include "Core/Interrupts/PIC/pic8259.c"
 #include "Core/Interrupts/PIC/pit8254.c"
+#include "Core/Interrupts/PIC/kb8042.c"
 #include "Core/Interrupts/Exceptions/exceptions.c"
 
 #include "Core/IO/vga.c"
@@ -24,9 +25,10 @@ void kernel()
 	initTerm(BLACK, MAGENTA);
 	initTimer(50);
 	initExceptions();
+	initKeyboard();
 	
 	logSerial("It works !!!");
-	asm volatile ("int $1");
+	asm volatile ("int $33");
 }
 
 

@@ -59,7 +59,7 @@ static void irqRemap()
 
 } 
 
-/*  Acknoledge and reset interruptions when triggered */
+/*  Acknwoledge and reset interruptions when triggered */
 void acknowledge(uint8_t interrupt) 
 {
   // The interrupt number must be in PIC interval
