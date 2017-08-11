@@ -24,5 +24,6 @@ L'IDT est en place avec les exceptions de 0 à 31
 
 
 Ressources:
-http://wiki.osdev.org
-http://www.jamesmolloy.co.uk
+- http://wiki.osdev.org
+- http://www.jamesmolloy.co.uk
+- http://a.michelizza.free.fr/

@@ -29,6 +29,9 @@ void kernel(unsigned int ebx){
 	
 	logSerial("It works !!!");
 
+	asm volatile ("int $1");
+}
+
  //    multiboot_info_t *mbinfo = (multiboot_info_t *) ebx;
  //    unsigned int adresse_du_module = mbinfo->mods_addr;
     
@@ -37,4 +40,4 @@ void kernel(unsigned int ebx){
 	// call_module_t startProgram = (call_module_t) adresse_du_module;
 	// startProgram();
 	//asm volatile ("int $0");
-}
+

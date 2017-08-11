@@ -2,13 +2,16 @@
 #define ISR_H
 
 // Exceptions
+
 #define DIVIDE_ZERO 0
 #define EXCEPT1 1
 #define EXCEPT2 2
 #define EXCEPT6 6
 #define EXCEPT7 7
+
 #define DOUBLE_FAULT 8
 #define PAGE_FAULT 14
+
 
 // Interruptions
 #define IRQ0 32		// PIT 8254  PIC-master 0 : Timer | PIC-Slave 8 : Real Time Clock (CMOS)

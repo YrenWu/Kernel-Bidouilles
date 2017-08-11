@@ -28,6 +28,7 @@ void initExceptions()
 	registerInterruptHandler(EXCEPT2, &genericExceptionCallback);
 	registerInterruptHandler(EXCEPT6, &genericExceptionCallback);
 	registerInterruptHandler(EXCEPT7, &genericExceptionCallback);
+
 	registerInterruptHandler(DOUBLE_FAULT, &genericExceptionCallback);
 	registerInterruptHandler(PAGE_FAULT, &genericExceptionCallback);
 }
