@@ -16,7 +16,7 @@ isr\int:
 .macro errorCodeISR int
 .global isr\int
 isr\int:
-    cli
+    cli 
     pushl $\int                 # interrupt number
     jmp commonInterruptHandler    # jump to interrupt handler routine
 .endm
@@ -57,6 +57,7 @@ noErrorCodeISR 31   # 0x1F Reserved
 
 commonInterruptHandler:             # generic interrupt handler
     pushal
+
     pushl %ds
     pushl %es
     pushl %fs
@@ -64,7 +65,6 @@ commonInterruptHandler:             # generic interrupt handler
     
     call interruptHandler # call the C handler with exception code
 
-    # registers restauration from stack
     popl %gs
     popl %fs
     popl %es
@@ -74,4 +74,5 @@ commonInterruptHandler:             # generic interrupt handler
 
     # esp restauration
     addl $8, %esp
+    sti
     iret

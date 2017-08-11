@@ -91,7 +91,8 @@ void interruptHandler(cpuSize_t cpuState)
   if (interruptCallbacks[cpuState.interrupt] != 0) {
     isr_t handler = interruptCallbacks[cpuState.interrupt];
     handler(cpuState);
-  } else {
-    debug(cpuState); // else debug mode
+  } 
+  else {
+     debug(cpuState); // else debug mode
   }
 }
