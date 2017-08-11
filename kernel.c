@@ -23,13 +23,14 @@ void kernel(unsigned int ebx){
 	gdtInit();
 	idtInit();
 	initTerm(BLACK, MAGENTA);
-	initTimer(50);
+	initTimer(5);
 	initExceptions();
 	initKeyboard();
 	
 	logSerial("It works !!!");
 
-	asm volatile ("int $1");
+	asm volatile ("int $18");
+	asm volatile ("cli");
 }
 
  //    multiboot_info_t *mbinfo = (multiboot_info_t *) ebx;

@@ -47,15 +47,14 @@ typedef struct stateCPU
 
 	/* Indexes */
     uint32_t edi, esi;
-
     /* Pointers */
     uint32_t ebp, esp;
-
     /* General registers */
     uint32_t ebx, edx, ecx, eax; 
 
     uint32_t interrupt;		// Interrupt number
     uint32_t errorCode;    	// Error code (if applicable), or 0
+    uint32_t eip, cs, eflags, useresp, ss;
 
 } cpuSize_t; 
 

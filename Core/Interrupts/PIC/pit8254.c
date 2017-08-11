@@ -14,7 +14,7 @@ void printTimer();
 void timerCallback(cpuSize_t regs)
 {
    clock.timer++;
-   //printTimer();
+   printTimer();
 }
 
 void printTimer()
