@@ -18,7 +18,7 @@ void kbCallback(cpuSize_t registers)
     do {
         if(inb(KEYB_DATA_PORT) != bytes) { // if new char
             bytes = inb(KEYB_DATA_PORT);
-            if(bytes <= 0x31) {
+            if(bytes <= 0x5D) {
             	letter = hexToLetter(bytes);
             	putChar(letter, terminal.defaultColor);
          	} 
@@ -35,8 +35,6 @@ unsigned char hexToLetter(char c)
 	uint8_t lettersMiddle[] = {'q','s','d','f','g','h','j','k','l','m'};
 	uint8_t lettersDown[] = {'w','x','c','v','b','n'};
 
-	printHex(c);
-	
 	if((c >= 0x2) && (c <= 0xB)) { 
 		return numbers[c-2];
 	} else if ((c >= 0x10) && (c <= 0x19)) {
@@ -45,7 +43,9 @@ unsigned char hexToLetter(char c)
 		return lettersMiddle[c-30];
 	} else if ((c >= 0x2C)  && (c <= 0x31)) {
 		return lettersDown[c-44];
-	}  else if (c == 0x1C) {
- 		print("");
+	} else if (c == 0x1C) {
+ 		return '\n';
+ 	} else if (c == 0x39) {
+ 		return ' ';
  	}
 }

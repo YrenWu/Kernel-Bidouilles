@@ -18,8 +18,8 @@
 #include "Core/Interrupts/idtSetup.c"
 
 
-void kernel()
-{
+void kernel(unsigned int ebx){
+
 	gdtInit();
 	idtInit();
 	initTerm(BLACK, MAGENTA);
@@ -28,7 +28,13 @@ void kernel()
 	initKeyboard();
 	
 	logSerial("It works !!!");
-	asm volatile ("int $33");
+
+ //    multiboot_info_t *mbinfo = (multiboot_info_t *) ebx;
+ //    unsigned int adresse_du_module = mbinfo->mods_addr;
+    
+	// typedef void (*call_module_t)(void);
+
+	// call_module_t startProgram = (call_module_t) adresse_du_module;
+	// startProgram();
+	//asm volatile ("int $0");
 }
-
-

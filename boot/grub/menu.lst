@@ -3,3 +3,4 @@ timeout=0
 
 title os
 kernel /boot/MyKernel.elf
+module /modules/program

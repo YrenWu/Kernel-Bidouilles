@@ -13,18 +13,18 @@ void putChar(char c, uint8_t color)
 	} 
 
 	const size_t index = (FB_COLUMN_SIZE * terminal.currentRow) + terminal.currentColumn; // buffer index
-	vgaFrameBuffer[index] = ((uint16_t)color << 8) | c;
-	terminal.currentColumn ++;
- 
-	if (terminal.currentColumn >= FB_COLUMN_SIZE)
-	{
+	if(c != '\n') {
+		vgaFrameBuffer[index] = ((uint16_t)color << 8) | c;
+		terminal.currentColumn ++;
+	}
+	
+	if (terminal.currentColumn >= FB_COLUMN_SIZE || c == '\n') {
 		terminal.currentColumn = 0;
 		terminal.currentRow ++;
 	}
  
 	// if full framebuffer return to top
-	if (terminal.currentRow >= FB_ROW_SIZE)
-	{
+	if (terminal.currentRow >= FB_ROW_SIZE) {
 		terminal.currentColumn = 0;
 		terminal.currentRow = 0;
 	}

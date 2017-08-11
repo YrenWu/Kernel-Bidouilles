@@ -2,14 +2,14 @@
 .global loader					# set loader label accessible form outside the file
 	
 # MULTIBOOT HEADER 	
-.set MAGIC, 0x1BADB002 			# GRUB will use this to detect kernel's location													
-.set FLAGS, 0x0 												
-.set CHECKSUM, -MAGIC 	
+.set MAGIC, 0x1BADB002 			# GRUB will use this to detect kernel's location		
+.set ALIGN_MOD, 0x00000001																				
+.set CHECKSUM, -(MAGIC + ALIGN_MOD)
 
 .section .multiboot
 	.align 4 
 	.long MAGIC
-	.long FLAGS
+	.long ALIGN_MOD
 	.long CHECKSUM
 																	
 .section .bss
@@ -21,7 +21,8 @@
 .section .text 													
 .align 4		
 	loader:																										
-	mov $kernel_stack_top, %esp # stack setup									
+	mov $kernel_stack_top, %esp # stack setup	
+	push %ebx;								
 	call kernel														
 			
 	cli							# clear interrupt flags								
