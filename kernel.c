@@ -1,4 +1,3 @@
-
 #include "Base/Types/types.h"
 #include "Base/Structures/devices.h"
 #include "Base/Structures/descriptors.h"
@@ -25,6 +24,7 @@ void keyboard();
 
 void kernel(unsigned int ebx){
 	init();
+	asm volatile ("int $31");
 	// Interrupt with error code : 8, 10 11, 12, 13, 14, 17, 30
 }
 

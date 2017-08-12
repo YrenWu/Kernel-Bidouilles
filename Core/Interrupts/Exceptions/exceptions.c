@@ -1,5 +1,3 @@
-
-
 void genericExceptionCallback(cpuSize_t registers);
 void initExceptions();
 void pageFaultCallback(cpuSize_t registers);
@@ -10,57 +8,39 @@ void genericExceptionCallback(cpuSize_t registers)
 	printCat("Interrupt number : ");
 	printDec(registers.interrupt);
 
-	switch(registers.interrupt) {
-		case(0):
-			print("Divide by zero (Fault)");
-			break;
-		case(1):
-			print("Debug (Fault/Trap)");
-			break;
-		case(2):
-			print("Non-maskable interrupt (Interrupt)");
-			break;
-		case(3):
-			print("Breakpoint (Trap)");
-			break;
-		case(4):
-			print("Overflow (Trap)");
-			break;
-		case(5):
-			print("Bound range Exceeded (Trap)");
-			break;
-		case(6):
-			print("Invalid opcode (Fault)");
-			break;
-		case(7):
-			print("Device not available (Fault)");
-			break;
-		case(8):
-			print("Double fault (Abort) code 0");
-			break;
-		case(9):
-			print("Coprocessor Segment Overun (Fault)");
-			break;
-		case(10):
-			print("Invalid TSS (Fault)");
-			break;
-		case(11):
-			print("Segment not present (Fault)");
-			break;
-		case(12):
-			print("Stack segment fault (Fault)");
-			break;
-			// 13   # 0xD Genreal protection fault  		FAULT
-			// 14   # 0xE Page fault                		FAULT
-			// 15   # 0xF  Unknown interrupt exception 
-			// 16   # 0x10 Floating Point exception 		FAULT
-			// 17   # 0x11 Alignment check          		FAULT
-			// 18   # 0x12 Machine check            		ABORT
-			// 19   # 0x13 SIMD Floating Point Exception 	FAULT  
-			// 20   # 0x14 Virtualization exception 		FAULT
-			// 21-29 # 0x15-0x1D Reserved 
-			// 30   # 0x1E Security Exception       
-			// 31   # 0x1F Reserved
+	char * errorMessages[] = {
+		"Divide by zero (Fault)",
+		"Debug (Fault/Trap)",
+		"Non-maskable interrupt (Interrupt)",
+		"Breakpoint (Trap)",
+		"Overflow (Trap)",
+		"Bound range Exceeded (Trap)",
+		"Invalid opcode (Fault)",
+		"Device not available (Fault)",
+		"Double fault (Abort) code 0",
+		"Coprocessor Segment Overun (Fault)",
+		"Invalid TSS (Fault)",
+		"Segment not present (Fault)",
+		"Stack segment fault (Fault)",
+		"General protection fault (Fault)",
+		"Page fault (Fault)",
+		"Unknown interrupt exception",
+		"Floating Point exception (Fault)",
+		"Alignment check (Fault)",
+		"Machine check (Abort)",
+		"SIMD Floating Point Exception(Fault)",
+		"Virtualization exception (Fault)",
+	};
+
+	if(registers.interrupt < 21) {
+		print(errorMessages[registers.interrupt]);
+	} else if((registers.interrupt >= 21 && registers.interrupt < 30) || registers.interrupt == 31) {
+		print("Reserved");
+	} else if(registers.interrupt == 30 ){
+		print("Security Exception");
+	} else {
+		printCat("Unregistered interrupt, please check for interrupt number : ");
+		printDec(registers.interrupt);
 	}
 
 	if(registers.errorCode != 0){
@@ -68,18 +48,6 @@ void genericExceptionCallback(cpuSize_t registers)
 		printCat("Error code : ");
 		printDec(registers.errorCode);
 	}
-}
-
-void pageFaultCallback(cpuSize_t registers)
-{
-	printColor("PAGE FAULT", BLACK, GREEN);
-	debug(registers);
-}
-
-void doubleFaultCallback(cpuSize_t registers)
-{
-	printColor("DOUBLE FAULT", BLACK, GREEN);
-	debug(registers);
 }
 
 void initExceptions()
@@ -94,7 +62,7 @@ void initExceptions()
 	registerInterruptHandler(EXCEPT6, &genericExceptionCallback);
 	registerInterruptHandler(EXCEPT7, &genericExceptionCallback);
 
-	registerInterruptHandler(DOUBLE_FAULT, &doubleFaultCallback);	// 8 
+	registerInterruptHandler(DOUBLE_FAULT, &genericExceptionCallback);	// 8 
 
 	registerInterruptHandler(EXCEPT9, &genericExceptionCallback);
 	registerInterruptHandler(EXCEPT10, &genericExceptionCallback);
@@ -102,7 +70,7 @@ void initExceptions()
 	registerInterruptHandler(EXCEPT12, &genericExceptionCallback);
 	registerInterruptHandler(EXCEPT13, &genericExceptionCallback);
 
-	registerInterruptHandler(PAGE_FAULT, &pageFaultCallback);		// 14
+	registerInterruptHandler(PAGE_FAULT, &genericExceptionCallback);		// 14
 
 	registerInterruptHandler(EXCEPT15, &genericExceptionCallback);
 	registerInterruptHandler(EXCEPT16, &genericExceptionCallback);
@@ -110,6 +78,9 @@ void initExceptions()
 	registerInterruptHandler(EXCEPT18, &genericExceptionCallback);
 	registerInterruptHandler(EXCEPT19, &genericExceptionCallback);
 	registerInterruptHandler(EXCEPT20, &genericExceptionCallback);
+
+	registerInterruptHandler(EXCEPT30, &genericExceptionCallback);
+	registerInterruptHandler(EXCEPT31, &genericExceptionCallback);
 }
 /* Page fault Error code
 Bit 0

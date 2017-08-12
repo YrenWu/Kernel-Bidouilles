@@ -31,8 +31,8 @@
 #define EXCEPT20 20 // 0x14 Virtualization exception 		FAULT
 
 // 21-29 # 0x15-0x1D Reserved 
-// 30   # 0x1E Security Exception       
-// 31   # 0x1F Reserved
+#define EXCEPT30 30 // 0x1E Security Exception
+#define EXCEPT31 31 // 0x1F Reserved
 
 /* Interruptions definitions */
 
