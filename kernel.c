@@ -18,16 +18,38 @@
 #include "Core/Interrupts/idtSetup.c"
 
 
-void kernel(unsigned int ebx){
+void init();
+void kernel(unsigned int ebx);
+void timer();
+void keyboard();
 
+void kernel(unsigned int ebx){
+	init();
+	// Interrupt with error code : 8, 10 11, 12, 13, 14, 17, 30
+}
+
+void init() 
+{
 	gdtInit();
 	idtInit();
 	initTerm(BLACK, MAGENTA);
-	initTimer(5);
 	initExceptions();
 	initKeyboard();
-	
-	logSerial("It works !!!");
+	logSerial("Boot");
+}
 
+void keyboard()
+{
+	asm volatile ("int $33");
+}
+
+void timer()
+{
+	initTimer(50);
 	asm volatile ("int $32");
+	asm volatile ("int $32");
+	asm volatile ("int $32");
+	asm volatile ("int $32");
+	asm volatile ("int $32");
+	printTimer();
 }

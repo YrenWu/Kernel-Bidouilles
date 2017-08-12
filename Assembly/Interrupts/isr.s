@@ -17,6 +17,7 @@ isr\int:
 .global isr\int
 isr\int:
     cli 
+    subl $4, %esp
     pushl $\int                 # interrupt number
     jmp commonInterruptHandler    # jump to interrupt handler routine
 .endm

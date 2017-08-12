@@ -1,6 +1,5 @@
 
 
-void zeroCallback(cpuSize_t registers);
 void genericExceptionCallback(cpuSize_t registers);
 void initExceptions();
 void pageFaultCallback(cpuSize_t registers);
@@ -12,6 +11,9 @@ void genericExceptionCallback(cpuSize_t registers)
 	printDec(registers.interrupt);
 
 	switch(registers.interrupt) {
+		case(0):
+			print("Divide by zero (Fault)");
+			break;
 		case(1):
 			print("Debug (Fault/Trap)");
 			break;
@@ -48,44 +50,41 @@ void genericExceptionCallback(cpuSize_t registers)
 		case(12):
 			print("Stack segment fault (Fault)");
 			break;
-		// 13   # 0xD Genreal protection fault  		FAULT
-		// 14   # 0xE Page fault                		FAULT
-		// 15   # 0xF  Unknown interrupt exception 
-		// 16   # 0x10 Floating Point exception 		FAULT
-		// 17   # 0x11 Alignment check          		FAULT
-		// 18   # 0x12 Machine check            		ABORT
-		// 19   # 0x13 SIMD Floating Point Exception 	FAULT  
-		// 20   # 0x14 Virtualization exception 		FAULT
-		// 21-29 # 0x15-0x1D Reserved 
-		// 30   # 0x1E Security Exception       
-		// 31   # 0x1F Reserved
+			// 13   # 0xD Genreal protection fault  		FAULT
+			// 14   # 0xE Page fault                		FAULT
+			// 15   # 0xF  Unknown interrupt exception 
+			// 16   # 0x10 Floating Point exception 		FAULT
+			// 17   # 0x11 Alignment check          		FAULT
+			// 18   # 0x12 Machine check            		ABORT
+			// 19   # 0x13 SIMD Floating Point Exception 	FAULT  
+			// 20   # 0x14 Virtualization exception 		FAULT
+			// 21-29 # 0x15-0x1D Reserved 
+			// 30   # 0x1E Security Exception       
+			// 31   # 0x1F Reserved
 	}
 
-	// if(registers.errorCode != 0){
-	// 	printCat("Error code : ");
-	// 	printDec(registers.errorCode);
-	// }
+	if(registers.errorCode != 0){
+		print("");
+		printCat("Error code : ");
+		printDec(registers.errorCode);
+	}
 }
 
 void pageFaultCallback(cpuSize_t registers)
 {
-	printColor("PAGE FAULT", BLACK, RED);
+	printColor("PAGE FAULT", BLACK, GREEN);
+	debug(registers);
 }
 
 void doubleFaultCallback(cpuSize_t registers)
 {
 	printColor("DOUBLE FAULT", BLACK, GREEN);
-}
-
-
-void zeroCallback(cpuSize_t registers)
-{
-	printColor("Fault : division by zero", BLACK, RED);
+	debug(registers);
 }
 
 void initExceptions()
 {
-	registerInterruptHandler(DIVIDE_ZERO, &zeroCallback); 			// 0
+	registerInterruptHandler(DIVIDE_ZERO, &genericExceptionCallback); // 0
 
 	registerInterruptHandler(EXCEPT1, &genericExceptionCallback);
 	registerInterruptHandler(EXCEPT2, &genericExceptionCallback);
