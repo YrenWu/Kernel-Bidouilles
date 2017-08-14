@@ -2,6 +2,23 @@ void genericExceptionCallback(cpuSize_t registers);
 void initExceptions();
 void pageFaultCallback(cpuSize_t registers);
 
+void pageFaultCallback(cpuSize_t registers)
+{
+	printColor("PAGE FAULT", BLACK, GREEN);
+	debug(registers);
+	/* 
+    US RW  P - Description
+	0  0  0 - Supervisory process tried to read a non-present page entry
+	0  0  1 - Supervisory process tried to read a page and caused a protection fault
+	0  1  0 - Supervisory process tried to write to a non-present page entry
+	0  1  1 - Supervisory process tried to write a page and caused a protection fault
+	1  0  0 - User process tried to read a non-present page entry
+	1  0  1 - User process tried to read a page and caused a protection fault
+	1  1  0 - User process tried to write to a non-present page entry
+	1  1  1 - User process tried to write a page and caused a protection fault
+	*/
+}
+
 void genericExceptionCallback(cpuSize_t registers)
 {
 	printColor("Exception triggered", BLACK, RED);
@@ -62,7 +79,7 @@ void initExceptions()
 	registerInterruptHandler(EXCEPT6, &genericExceptionCallback);
 	registerInterruptHandler(EXCEPT7, &genericExceptionCallback);
 
-	registerInterruptHandler(DOUBLE_FAULT, &genericExceptionCallback);	// 8 
+	registerInterruptHandler(DOUBLE_FAULT, &genericExceptionCallback); // 8 
 
 	registerInterruptHandler(EXCEPT9, &genericExceptionCallback);
 	registerInterruptHandler(EXCEPT10, &genericExceptionCallback);
@@ -70,7 +87,7 @@ void initExceptions()
 	registerInterruptHandler(EXCEPT12, &genericExceptionCallback);
 	registerInterruptHandler(EXCEPT13, &genericExceptionCallback);
 
-	registerInterruptHandler(PAGE_FAULT, &genericExceptionCallback);		// 14
+	registerInterruptHandler(PAGE_FAULT, &pageFaultCallback); // 14
 
 	registerInterruptHandler(EXCEPT15, &genericExceptionCallback);
 	registerInterruptHandler(EXCEPT16, &genericExceptionCallback);
@@ -82,29 +99,3 @@ void initExceptions()
 	registerInterruptHandler(EXCEPT30, &genericExceptionCallback);
 	registerInterruptHandler(EXCEPT31, &genericExceptionCallback);
 }
-/* Page fault Error code
-Bit 0
-    If set, the fault was not because the page wasn't present. If unset, the page wasn't present.
-Bit 1
-    If set, the operation that caused the fault was a write, else it was a read.
-Bit 2
-    If set, the processor was running in user-mode when it was interrupted. Else, it was running in kernel-mode.
-Bit 3
-    If set, the fault was caused by reserved bits being overwritten.
-Bit 4
-    If set, the fault occurred during an instruction fetch. 
-
-    Address which cause the fault in CR2 
-
-
-    US RW  P - Description
-0  0  0 - Supervisory process tried to read a non-present page entry
-0  0  1 - Supervisory process tried to read a page and caused a protection fault
-0  1  0 - Supervisory process tried to write to a non-present page entry
-0  1  1 - Supervisory process tried to write a page and caused a protection fault
-1  0  0 - User process tried to read a non-present page entry
-1  0  1 - User process tried to read a page and caused a protection fault
-1  1  0 - User process tried to write to a non-present page entry
-1  1  1 - User process tried to write a page and caused a protection fault
-
-*/

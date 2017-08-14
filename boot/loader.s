@@ -22,10 +22,10 @@
 .align 4		
 	loader:																										
 	mov $kernel_stack_top, %esp # stack setup	
-	push %ebx;								
+	push %ebx;	
+	
 	call kernel														
 			
 	cli							# clear interrupt flags								
 .loop: 																
-	jmp .loop					# kernel's inifinite loop												
-									
+	jmp .loop					# kernel's inifinite loop	

@@ -14,6 +14,7 @@
 #include "Core/IO/vga.c"
 #include "Core/IO/serial.c"
 #include "Core/Memory/gdtSetup.c"
+#include "Core/Memory/pagination.c"
 #include "Core/Interrupts/idtSetup.c"
 
 
