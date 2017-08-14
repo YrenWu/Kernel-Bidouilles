@@ -8,7 +8,7 @@ EMU_OPT		= -kernel
 KERNEL_NAME = MyKernel.elf
 LOG_FILE	= qemuSerial.log
 
-O_FILES 	= loader.o kernel.o gdt.o io.o isr.o idt.o irq.o
+O_FILES 	= loader.o kernel.o gdt.o io.o isr.o idt.o irq.o pagination.o
 
 assemble:
 	$(ASM) $(ASMFLAGS) boot/loader.s -o loader.o
@@ -17,6 +17,7 @@ assemble:
 	$(ASM) $(ASMFLAGS) Assembly/Interrupts/isr.s -o isr.o 
 	$(ASM) $(ASMFLAGS) Assembly/Interrupts/idt.s -o idt.o 
 	$(ASM) $(ASMFLAGS) Assembly/Interrupts/irq.s -o irq.o 
+	$(ASM) $(ASMFLAGS) Assembly/Memory/pagination.s -o pagination.o 
 
 compile:
 	$(CCOMPILER) $(CFLAGS) -c kernel.c -o kernel.o 

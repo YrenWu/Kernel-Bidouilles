@@ -17,6 +17,12 @@ void pageFaultCallback(cpuSize_t registers)
 	1  1  0 - User process tried to write to a non-present page entry
 	1  1  1 - User process tried to write a page and caused a protection fault
 	*/
+
+	/*  Address who triggered the fault is in CR2 :
+		- end of the program (error Segmentation Fault)
+		- load temporary memory on a swap area (on hard drive)
+		- allocate frame page
+	*/
 }
 
 void genericExceptionCallback(cpuSize_t registers)
